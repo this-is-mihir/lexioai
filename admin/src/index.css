@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #7F77DD;
+    --primary-light: #9990E8;
+    --primary-dark: #6b62c7;
+    --bg: #ffffff;
+    --bg-card: #f8f8ff;
+    --bg-hover: #f0f0f8;
+    --border: #e2e2ef;
+    --text: #1a1a2e;
+    --text-muted: #6060808;
+    --sidebar-bg: #ffffff;
+    --sidebar-border: #e2e2ef;
+  }
+
+  .dark {
+    --bg: #0F0F14;
+    --bg-card: #1A1A24;
+    --bg-hover: #222230;
+    --border: #2A2A38;
+    --text: #E8E8F0;
+    --text-muted: #9090A8;
+    --sidebar-bg: #13131c;
+    --sidebar-border: #2A2A38;
+  }
+
+  body {
+    @apply bg-[var(--bg)] text-[var(--text)] font-sans transition-colors duration-200;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[var(--border)] rounded-full transition-colors;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[var(--text-muted)];
+  }
+
+  /* Horizontal scrollbar for tables */
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-muted);
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6;
+  }
+
+  .btn-primary {
+    @apply bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-xl 
+           font-medium text-sm transition-all duration-200 
+           hover:shadow-lg hover:shadow-primary-500/25 
+           active:scale-95 flex items-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--bg-hover)] hover:bg-[var(--border)] text-[var(--text)] 
+           px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200
+           border border-[var(--border)] active:scale-95 flex items-center gap-2;
+  }
+
+  .btn-danger {
+    @apply bg-red-500/10 hover:bg-red-500/20 text-red-400 
+           px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200
+           border border-red-500/20 active:scale-95 flex items-center gap-2;
+  }
+
+  .input {
+    @apply w-full bg-[var(--bg)] border border-[var(--border)] rounded-xl 
+           px-4 py-2.5 text-sm text-[var(--text)] 
+           placeholder:text-[var(--text-muted)]
+           focus:outline-none focus:ring-2 focus:ring-primary-500/50 
+           focus:border-primary-500 transition-all duration-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full 
+           text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-emerald-500/10 text-emerald-400 border border-emerald-500/20;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-500/10 text-amber-400 border border-amber-500/20;
+  }
+
+  .badge-danger {
+    @apply badge bg-red-500/10 text-red-400 border border-red-500/20;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-500/10 text-primary-400 border border-primary-500/20;
+  }
+
+  .badge-muted {
+    @apply badge bg-[var(--bg-hover)] text-[var(--text-muted)] border border-[var(--border)];
+  }
+
+  .table-row {
+    @apply border-b border-[var(--border)] hover:bg-[var(--bg-hover)] 
+           transition-colors duration-150;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+           text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-hover)]
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .sidebar-item-active {
+    @apply sidebar-item bg-primary-500/10 text-primary-400 
+           hover:bg-primary-500/15 hover:text-primary-400;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
