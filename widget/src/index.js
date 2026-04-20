@@ -73,15 +73,22 @@ class LexioaiWidget {
   }
 
   // Get embed key from script tag attribute
-  getEmbedKeyFromScript() {
-    const scripts = document.querySelectorAll('script[src*="widget.js"]');
-    for (const script of scripts) {
-      const url = new URL(script.src, window.location.href);
-      const key = url.searchParams.get('key');
-      if (key) return key;
-    }
+ getEmbedKeyFromScript() {
+  const script = this.getWidgetScriptElement();
+
+  if (!script) {
+    console.error("[Lexioai] Widget script not found");
     return null;
   }
+
+  // ✅ FIRST: data-key (most reliable)
+  const dataKey = script.getAttribute("data-key");
+  if (dataKey) return dataKey;
+
+  // ✅ SECOND: fallback from URL
+  const url = new URL(script.src, window.location.href);
+  return url.searchParams.get("key");
+}
 
   getWidgetScriptElement() {
     const scripts = document.querySelectorAll('script[src*="widget.js"]');

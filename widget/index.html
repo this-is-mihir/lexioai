@@ -133,7 +133,11 @@
   <!-- Widget Script -->
   <!-- In development, this will be served from webpack-dev-server -->
   <!-- In production, it will be served from the CDN -->
-  <script src="http://localhost:5175/widget.js?key=80f68b7967d1440bb34260e61a4e5512"></script>
+  <script 
+  src="/widget/dist/widget.js"
+  data-key="80f68b7967d1440bb34260e61a4e5512"
+  data-api-base="https://lexioai-server.onrender.com/api/v1">
+</script>
 
   <script>
     // Test function to verify API connection
@@ -143,7 +147,7 @@
       statusDiv.className = 'status';
 
       try {
-        const response = await fetch('http://localhost:5000/api/v1/widget/80f68b7967d1440bb34260e61a4e5512/config');
+        const response = await fetch('https://lexioai-server.onrender.com/api/v1/widget/80f68b7967d1440bb34260e61a4e5512/config');
         const data = await response.json();
         
         if (data.data && data.data.isLive) {
