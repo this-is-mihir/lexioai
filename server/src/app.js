@@ -41,9 +41,10 @@ app.use(helmet());
 // ----------------------------------------------------------------
 // CORS
 // ----------------------------------------------------------------
-const allowedOrigins = process.env.CORS_ORIGINS
-  ? process.env.CORS_ORIGINS.split(",")
-  : ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175" , "https://lexioai-webapp.vercel.app" , "https://lexioai-admin.vercel.app" , "lexioai-webapp.vercel.app" , "lexioai-admin.vercel.app" ];
+const allowedOrigins = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
 
 app.use(
   cors({
