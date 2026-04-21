@@ -39,12 +39,12 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
 
     /* Main Container */
     .lx-widget-container {
-      position: fixed;
+      position: fixed !important;
       bottom: ${positionStyle.bottom};
       right: ${positionStyle.right};
       left: ${positionStyle.left};
       top: ${positionStyle.top};
-      z-index: 999999;
+      z-index: 2147483647 !important;
       font-size: 14px;
     }
 
@@ -105,6 +105,7 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
     /* Chat Window */
     .lx-window {
       position: fixed;
+      z-index: 2147483647;
       bottom: ${chatStyle.chatBottom};
       right: ${positionStyle.right};
       left: ${positionStyle.left};
