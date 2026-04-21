@@ -120,7 +120,17 @@ class LexioaiWidget {
   injectWidget() {
     // Create main container
     this.container = document.createElement('div');
-    this.container.className = 'lx-widget-container';
+this.container.className = 'lx-widget-container';
+
+// 🔥 FORCE FIX (IMPORTANT)
+this.container.style.cssText = `
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  left: auto !important;
+  top: auto !important;
+  z-index: 2147483647 !important;
+`;
 
     // Attach Shadow DOM
     this.shadowRoot = this.container.attachShadow({ mode: 'open' });
@@ -139,6 +149,7 @@ class LexioaiWidget {
     // Create bubble
     const botName = this.botConfig.botName || this.botConfig.name || 'Assistant';
     this.bubble = UI.createBubble(botName, 0, appearance);
+    this.bubble.style.zIndex = "2147483647";
     this.shadowRoot.appendChild(this.bubble);
 
     // Create chat window
@@ -152,6 +163,7 @@ class LexioaiWidget {
       appearance
     );
     this.windowElement = window;
+    this.windowElement.style.zIndex = "2147483647";
     this.messagesContainer = messages;
     this.inputArea = inputArea;
 
@@ -160,7 +172,7 @@ class LexioaiWidget {
     this.shadowRoot.appendChild(this.windowElement);
 
     // Append to document body
-    document.body.appendChild(this.container);
+    document.documentElement.appendChild(this.container);
 
     
   }
