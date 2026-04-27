@@ -134,3 +134,7 @@ dist-types/
 uploads/
 /storage/
 .cache/
+
+# plan files 
+plan.txt
+plan.md

@@ -40,12 +40,14 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
     /* Main Container */
     .lx-widget-container {
       position: fixed !important;
-      bottom: ${positionStyle.bottom};
-      right: ${positionStyle.right};
-      left: ${positionStyle.left};
-      top: ${positionStyle.top};
+      bottom: ${positionStyle.bottom} !important;
+      right: ${positionStyle.right} !important;
+      left: ${positionStyle.left} !important;
+      top: ${positionStyle.top} !important;
       z-index: 2147483647 !important;
+      isolation: isolate !important;
       font-size: 14px;
+      pointer-events: none;
     }
 
     /* Floating Bubble */
@@ -65,6 +67,8 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      pointer-events: auto;
+      padding: 0;
     }
 
     .lx-bubble:hover {
@@ -78,10 +82,14 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
 
     /* Bubble Avatar Image */
     .lx-bubble-avatar {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
+      display: block;
     }
 
     /* Unread Badge */
@@ -105,11 +113,11 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
     /* Chat Window */
     .lx-window {
       position: fixed;
-      z-index: 2147483647;
+      z-index: 2147483647 !important;
       bottom: ${chatStyle.chatBottom};
       right: ${positionStyle.right};
       left: ${positionStyle.left};
-      top: ${positionStyle.top === 'auto' ? 'auto' : 'auto'};
+      top: auto;
       width: ${chatStyle.width};
       height: ${chatStyle.height};
       background: white;
@@ -119,6 +127,7 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
       flex-direction: column;
       overflow: hidden;
       animation: lx-slideUp 0.3s ease-out;
+      pointer-events: auto;
     }
 
     /* Adjust chat position based on bubble position */

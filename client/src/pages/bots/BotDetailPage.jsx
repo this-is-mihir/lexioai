@@ -13,6 +13,7 @@ import Button from '../../components/ui/Button'
 import Loader from '../../components/ui/Loader'
 import BotAppearanceSettings from '../../components/bot/BotAppearanceSettings'
 import BotLivePreview from '../../components/bot/BotLivePreview'
+import EmbedSetupGuide from '../../components/bot/EmbedSetupGuide'
 
 async function fetchBot(botId) {
   const res = await clientApi.get(`/bots/${botId}`)
@@ -636,19 +637,18 @@ export default function BotDetailPage() {
           {tab === 3 ? (
             <div className="space-y-4">
               <Card>
-                <p className="text-sm font-semibold">Embed Key</p>
-                <p className="mt-2 font-mono text-xs">{bot.embedKey || 'Not generated'}</p>
-              </Card>
-              <Card>
-                <p className="text-sm font-semibold">Embed Code</p>
-                <code className="mt-2 block overflow-x-auto rounded-lg bg-[var(--bg-soft)] p-3 font-mono text-xs">
-                  {`<script src="https://lexioai.com/widget.js?key=${bot.embedKey || 'YOUR_KEY'}"></script>`}
-                </code>
-                <div className="mt-3 flex gap-2">
-                  <Button onClick={getEmbedCode}><Copy size={16} />Copy Code</Button>
-                  <Button variant="secondary" onClick={verifyInstallation} disabled={checking}><Link2 size={16} />{checking ? 'Verifying...' : 'Verify Live'}</Button>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+                  <div>
+                    <p className="text-sm font-semibold">Embed Key</p>
+                    <p className="mt-1 font-mono text-xs">{bot.embedKey || 'Not generated'}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={getEmbedCode}><Copy size={16} />Copy Code</Button>
+                    <Button variant="secondary" onClick={verifyInstallation} disabled={checking}><Link2 size={16} />{checking ? 'Verifying...' : 'Verify Live'}</Button>
+                  </div>
                 </div>
               </Card>
+              <EmbedSetupGuide bot={bot} />
             </div>
           ) : null}
 

@@ -623,14 +623,13 @@ botSchema.pre("save", function () {
 // Embed code generate karo
 botSchema.methods.getEmbedCode = function () {
   const widgetUrl = process.env.WIDGET_CDN_URL || "https://cdn.lexioai.com";
-  return `<!-- Lexioai Widget -->
-<script>
-  window.lexioaiConfig = {
-    botId: "${this.embedKey}"
-  };
-</script>
-<script src="${widgetUrl}/widget.js" async></script>
-<!-- End Lexioai Widget -->`;
+  const apiBaseUrl = process.env.API_BASE_URL || `${process.env.APP_URL || "http://localhost:5000"}/api/v1`;
+  return `<script
+  src="${widgetUrl}/widget.js"
+  data-key="${this.embedKey}"
+  data-api-base="${apiBaseUrl}"
+  defer>
+</script>`;
 };
 
 // Check karo bot is month ke liye chat limit mein hai ya nahi

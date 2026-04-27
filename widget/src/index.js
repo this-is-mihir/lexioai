@@ -120,17 +120,19 @@ class LexioaiWidget {
   injectWidget() {
     // Create main container
     this.container = document.createElement('div');
-this.container.className = 'lx-widget-container';
+    this.container.className = 'lx-widget-container';
 
-// 🔥 FORCE FIX (IMPORTANT)
-this.container.style.cssText = `
-  position: fixed !important;
-  bottom: 20px !important;
-  right: 20px !important;
-  left: auto !important;
-  top: auto !important;
-  z-index: 2147483647 !important;
-`;
+    // Force highest stacking context with full isolation
+    this.container.style.cssText = `
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
+      left: auto !important;
+      top: auto !important;
+      z-index: 2147483647 !important;
+      isolation: isolate !important;
+      pointer-events: none !important;
+    `;
 
     // Attach Shadow DOM
     this.shadowRoot = this.container.attachShadow({ mode: 'open' });
@@ -149,7 +151,6 @@ this.container.style.cssText = `
     // Create bubble
     const botName = this.botConfig.botName || this.botConfig.name || 'Assistant';
     this.bubble = UI.createBubble(botName, 0, appearance);
-    this.bubble.style.zIndex = "2147483647";
     this.shadowRoot.appendChild(this.bubble);
 
     // Create chat window
@@ -163,7 +164,6 @@ this.container.style.cssText = `
       appearance
     );
     this.windowElement = window;
-    this.windowElement.style.zIndex = "2147483647";
     this.messagesContainer = messages;
     this.inputArea = inputArea;
 
@@ -171,10 +171,8 @@ this.container.style.cssText = `
     this.windowElement.style.display = 'none';
     this.shadowRoot.appendChild(this.windowElement);
 
-    // Append to document body
+    // Append to document root (highest in DOM tree)
     document.documentElement.appendChild(this.container);
-
-    
   }
 
   // Restore chat state from localStorage
