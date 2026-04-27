@@ -118,16 +118,24 @@ class LexioaiWidget {
 
   // Inject widget into page via Shadow DOM
   injectWidget() {
+    // Get appearance settings FIRST (needed for container position)
+    const appearance = this.botConfig.appearance || {};
+    const position = appearance.position || 'bottom-right';
+    const bubbleSize = appearance.bubbleSize || 'medium';
+    const primaryColor = appearance.brandColor || appearance.primaryColor || '#7F77DD';
+
+    // Determine position values
+    const isLeft = position === 'bottom-left';
+
     // Create main container
     this.container = document.createElement('div');
     this.container.className = 'lx-widget-container';
 
-    // Force highest stacking context with full isolation
+    // Force highest stacking context with full isolation — RESPECT POSITION!
     this.container.style.cssText = `
       position: fixed !important;
       bottom: 20px !important;
-      right: 20px !important;
-      left: auto !important;
+      ${isLeft ? 'left: 20px !important; right: auto !important;' : 'right: 20px !important; left: auto !important;'}
       top: auto !important;
       z-index: 2147483647 !important;
       isolation: isolate !important;
@@ -136,12 +144,6 @@ class LexioaiWidget {
 
     // Attach Shadow DOM
     this.shadowRoot = this.container.attachShadow({ mode: 'open' });
-
-    // Get appearance settings
-    const appearance = this.botConfig.appearance || {};
-    const position = appearance.position || 'bottom-right';
-    const bubbleSize = appearance.bubbleSize || 'medium';
-    const primaryColor = appearance.brandColor || appearance.primaryColor || '#7F77DD';
 
     // Inject styles with appearance settings
     const styleEl = document.createElement('style');

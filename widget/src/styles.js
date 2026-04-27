@@ -473,36 +473,62 @@ export function getStyles(primaryColor = '#7F77DD', position = 'bottom-right', b
 
     /* Mobile Responsive */
     @media (max-width: 480px) {
-      .lx-widget-container {
-        bottom: 0;
-        right: 0;
-        left: 0;
-      }
-
       .lx-bubble {
+        position: fixed !important;
         width: 50px;
         height: 50px;
         font-size: 20px;
-        bottom: 20px;
-        right: 20px;
+        bottom: 16px;
+        ${position === 'bottom-left' ? 'left: 16px; right: auto;' : 'right: 16px; left: auto;'}
+        z-index: 2147483647 !important;
+        pointer-events: auto;
       }
 
       .lx-window {
-        width: 100%;
-        height: 100vh;
-        bottom: 0;
-        right: 0;
+        position: fixed !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100vh !important;
+        max-height: 100dvh !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
+        border-radius: 0 !important;
+        z-index: 2147483647 !important;
+        pointer-events: auto;
+      }
+
+      .lx-header {
         border-radius: 0;
-        max-height: 100vh;
+        padding: 14px 16px;
+        padding-top: max(14px, env(safe-area-inset-top));
       }
 
       .lx-messages {
         padding: 12px;
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       .lx-message-bot .lx-message-content,
       .lx-message-user .lx-message-content {
         max-width: 85%;
+        font-size: 14px;
+      }
+
+      .lx-input-area {
+        padding: 10px 12px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+      }
+
+      .lx-input {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+      }
+
+      .lx-powered-by {
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
       }
     }
 
