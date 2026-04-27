@@ -1,4 +1,4 @@
-// Setup Guides Data - All 34 Platforms
+﻿// Setup Guides Data - All 34 Platforms
 // Production-ready with detailed step-by-step instructions
 
 export const setupGuidesData = [
@@ -49,19 +49,11 @@ export const setupGuidesData = [
 4. Create a new bot or select an existing one
 5. Click the "Embed Code" tab
 6. Copy the entire code snippet`,
-        code: `<script>
-window.lexioBot = {
-  botId: "bot_12345abcde",
-  apiKey: "key_xyz789",
-  position: "bottom-right",
-  theme: "light"
-};
-(function(w,d,s){
-  var j=d.createElement(s);
-  j.async=true;
-  j.src='https://cdn.lexio.com/w.js';
-  d.head.appendChild(j);
-})(window,document,'script');
+        code: `<script
+  src="https://lexioai.pages.dev/widget.js"
+  data-key="YOUR_EMBED_KEY"
+  data-api-base="https://lexioai-server.onrender.com/api/v1"
+  defer>
 </script>`,
         tip: "Keep this code safe - you'll need it in the next step"
       },
@@ -251,17 +243,11 @@ window.lexioBot = {
 4. Select your bot
 5. Click "Embed Code" tab
 6. Copy the entire code`,
-        code: `<script>
-window.lexioBot = {
-  botId: "YOUR_BOT_ID",
-  position: "bottom-right"
-};
-(function(w,d,s){
-  var j=d.createElement(s);
-  j.async=true;
-  j.src='https://cdn.lexio.com/w.js';
-  d.head.appendChild(j);
-})(window,document,'script');
+        code: `<script
+  src="https://lexioai.pages.dev/widget.js"
+  data-key="YOUR_EMBED_KEY"
+  data-api-base="https://lexioai-server.onrender.com/api/v1"
+  defer>
 </script>`,
         tip: "Don't modify the code - paste exactly as is"
       },
@@ -342,17 +328,11 @@ window.lexioBot = {
 4. Select or create a bot
 5. Click "Embed Code" tab
 6. Copy the entire code snippet`,
-        code: `<script>
-window.lexioBot = {
-  botId: "YOUR_BOT_ID",
-  position: "bottom-right"
-};
-(function(w,d,s){
-  var j=d.createElement(s);
-  j.async=true;
-  j.src='https://cdn.lexio.com/w.js';
-  d.head.appendChild(j);
-})(window,document,'script');
+        code: `<script
+  src="https://lexioai.pages.dev/widget.js"
+  data-key="YOUR_EMBED_KEY"
+  data-api-base="https://lexioai-server.onrender.com/api/v1"
+  defer>
 </script>`,
         tip: "Keep the exact code - don't modify botId or structure"
       },
@@ -375,17 +355,11 @@ window.lexioBot = {
 5. Your changes are applied! ✅`,
         code: `... other content ...
 
-<script>
-window.lexioBot = {
-  botId: "YOUR_BOT_ID",
-  position: "bottom-right"
-};
-(function(w,d,s){
-  var j=d.createElement(s);
-  j.async=true;
-  j.src='https://cdn.lexio.com/w.js';
-  d.head.appendChild(j);
-})(window,document,'script');
+<script
+  src="https://lexioai.pages.dev/widget.js"
+  data-key="YOUR_EMBED_KEY"
+  data-api-base="https://lexioai-server.onrender.com/api/v1"
+  defer>
 </script>
 
 </body>
@@ -446,12 +420,12 @@ window.lexioBot = {
 2. Navigate to your React project directory
 3. Run this command:
 
-npm install @lexio/react-widget
+# No NPM package needed! Just add the script tag
 
 4. Wait for installation to complete
 5. Package installed! ✅`,
-        code: `npm install @lexio/react-widget`,
-        tip: "Using Yarn? Run: yarn add @lexio/react-widget"
+        code: `# No NPM package needed! Just add the script tag`,
+        tip: "Using Yarn? Run: # No Yarn package needed! Just add the script tag"
       },
       {
         number: 2,
@@ -459,10 +433,10 @@ npm install @lexio/react-widget
         content: `1. Open App.jsx (or your main component)
 2. Add this import at the top:
 
-import { LexioBot } from '@lexio/react-widget'
+// No import needed - widget loads via script tag
 
 3. This imports the Lexio bot component`,
-        code: `import { LexioBot } from '@lexio/react-widget'
+        code: `// No import needed - widget loads via script tag
 
 export default function App() {
   return (
@@ -482,7 +456,7 @@ export default function App() {
 
 2. Replace YOUR_BOT_ID with your actual bot ID
 3. Find bot ID in Lexio dashboard > Embed Code`,
-        code: `import { LexioBot } from '@lexio/react-widget'
+        code: `// No import needed - widget loads via script tag
 
 export default function App() {
   return (
@@ -547,7 +521,7 @@ npm run build
     faq: [
       {
         q: "Bot not showing in React app?",
-        a: "Check: 1) Is botId correct? 2) Did you import from @lexio/react-widget? 3) Is package installed? (npm list @lexio)"
+        a: "Check: 1) Is botId correct? 2) Is the script tag added correctly? 3) Check browser console (F12) for errors"
       },
       {
         q: "How do I pass bot ID dynamically?",
@@ -585,10 +559,10 @@ npm run build
         content: `1. Open terminal in your Next.js project
 2. Run:
 
-npm install @lexio/react-widget
+# No NPM package needed! Just add the script tag
 
 3. Installation complete!`,
-        code: `npm install @lexio/react-widget`,
+        code: `# No NPM package needed! Just add the script tag`,
         tip: "Works with both App Router and Pages Router"
       },
       {
@@ -599,7 +573,7 @@ npm install @lexio/react-widget
 
 'use client'
 
-import { LexioBot } from '@lexio/react-widget'
+// No import needed - widget loads via script tag
 
 export default function LexioBotWrapper() {
   return <LexioBot botId="YOUR_BOT_ID" />
@@ -609,7 +583,7 @@ export default function LexioBotWrapper() {
         code: `// components/LexioBotWrapper.jsx
 'use client'
 
-import { LexioBot } from '@lexio/react-widget'
+// No import needed - widget loads via script tag
 
 export default function LexioBotWrapper() {
   return (
@@ -718,15 +692,15 @@ npm start`,
       {
         number: 1,
         title: "Install NPM Package",
-        content: `npm install @lexio/vue-widget`,
-        code: `npm install @lexio/vue-widget`,
+        content: `# No NPM package needed! Just add the script tag`,
+        code: `# No NPM package needed! Just add the script tag`,
         tip: "Works with Vue 3"
       },
       {
         number: 2,
         title: "Import in Component",
         content: `<script setup>
-import { LexioBot } from '@lexio/vue-widget'
+// No import needed - widget loads via script tag
 
 const botId = 'YOUR_BOT_ID'
 </script>
@@ -738,7 +712,7 @@ const botId = 'YOUR_BOT_ID'
   </div>
 </template>`,
         code: `<script setup>
-import { LexioBot } from '@lexio/vue-widget'
+// No import needed - widget loads via script tag
 
 const botId = 'bot_12345abcde'
 </script>
@@ -763,7 +737,7 @@ const botId = 'bot_12345abcde'
         content: `In main.js:
 
 import { createApp } from 'vue'
-import { LexioBot } from '@lexio/vue-widget'
+// No import needed - widget loads via script tag
 import App from './App.vue'
 
 const app = createApp(App)
@@ -773,7 +747,7 @@ app.mount('#app')
 Now use <LexioBot /> in any component!`,
         code: `// main.js
 import { createApp } from 'vue'
-import { LexioBot } from '@lexio/vue-widget'
+// No import needed - widget loads via script tag
 import App from './App.vue'
 
 const app = createApp(App)
@@ -821,11 +795,11 @@ Bot should appear on page! ✅`,
       {
         number: 1,
         title: "Install Package",
-        content: `ng add @lexio/angular-widget
+        content: `# No package needed! Just add the script tag
 
 Or manually:
-npm install @lexio/angular-widget`,
-        code: `npm install @lexio/angular-widget`,
+# No NPM package needed! Just add the script tag`,
+        code: `# No NPM package needed! Just add the script tag`,
         tip: "Requires Angular 14+"
       },
       {
@@ -833,7 +807,7 @@ npm install @lexio/angular-widget`,
         title: "Import in Module",
         content: `In your app.module.ts:
 
-import { LexioBotModule } from '@lexio/angular-widget'
+// No import needed - widget loads via script tag
 
 @NgModule({
   imports: [
@@ -845,7 +819,7 @@ export class AppModule {}`,
         code: `// app.module.ts
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { LexioBotModule } from '@lexio/angular-widget'
+// No import needed - widget loads via script tag
 import { AppComponent } from './app.component'
 
 @NgModule({
@@ -1064,15 +1038,15 @@ window.lexioBot = {
       {
         number: 1,
         title: "Install Package",
-        content: `npm install @lexio/express`,
-        code: `npm install @lexio/express`,
+        content: `# No NPM package needed! Just add the script tag to your HTML`,
+        code: `# No NPM package needed! Just add the script tag to your HTML`,
         tip: "Also works with Node.js base"
       },
       {
         number: 2,
         title: "Initialize in Express",
         content: `const express = require('express')
-const lexio = require('@lexio/express')
+// No require needed - widget loads via script tag in HTML
 
 const app = express()
 
@@ -1082,7 +1056,7 @@ app.use(lexio.middleware({
 }))`,
         code: `// server.js
 const express = require('express')
-const lexio = require('@lexio/express')
+// No require needed - widget loads via script tag in HTML
 
 const app = express()
 
@@ -1193,17 +1167,11 @@ window.lexioBot = {
 
 </body>`,
         code: `<!-- before </body> -->
-<script>
-window.lexioBot = {
-  botId: "bot_12345abcde",
-  position: "bottom-right"
-};
-(function(w,d,s){
-  var j=d.createElement(s);
-  j.async=true;
-  j.src='https://cdn.lexio.com/w.js';
-  d.head.appendChild(j);
-})(window,document,'script');
+<script
+  src="https://lexioai.pages.dev/widget.js"
+  data-key="YOUR_EMBED_KEY"
+  data-api-base="https://lexioai-server.onrender.com/api/v1"
+  defer>
 </script>
 
 </body>`,
@@ -1600,20 +1568,20 @@ php bin/magento setup:upgrade`,
       {
         number: 1,
         title: "Install Package",
-        content: `npm install @lexio/svelte-widget`,
-        code: `npm install @lexio/svelte-widget`,
+        content: `# No NPM package needed! Just add the script tag`,
+        code: `# No NPM package needed! Just add the script tag`,
         tip: "Works with Svelte and SvelteKit"
       },
       {
         number: 2,
         title: "Use in Component",
         content: `<script>
-  import LexioBot from '@lexio/svelte-widget'
+  // No import needed - widget loads via script tag
 </script>
 
 <LexioBot botId="YOUR_BOT_ID" />`,
         code: `<script>
-  import LexioBot from '@lexio/svelte-widget'
+  // No import needed - widget loads via script tag
   
   const botId = 'bot_12345abcde'
 </script>
@@ -1641,11 +1609,11 @@ php bin/magento setup:upgrade`,
       {
         number: 1,
         title: "Install Module",
-        content: `npm install @lexio/nuxt-module
+        content: `# No NPM package needed! Just add the script tag
 
 Add to nuxt.config.ts:
-modules: ['@lexio/nuxt-module']`,
-        code: `npm install @lexio/nuxt-module`,
+modules: ['// Widget loads via script tag in app.vue']`,
+        code: `# No NPM package needed! Just add the script tag`,
         tip: "Available as Nuxt module"
       },
       {
@@ -1653,13 +1621,13 @@ modules: ['@lexio/nuxt-module']`,
         title: "Configure",
         content: `// nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@lexio/nuxt-module'],
+  modules: ['// Widget loads via script tag in app.vue'],
   lexio: {
     botId: 'YOUR_BOT_ID'
   }
 })`,
         code: `export default defineNuxtConfig({
-  modules: ['@lexio/nuxt-module'],
+  modules: ['// Widget loads via script tag in app.vue'],
   lexio: {
     botId: process.env.NUXT_PUBLIC_LEXIO_BOT_ID
   }
@@ -1683,8 +1651,8 @@ export default defineNuxtConfig({
       {
         number: 1,
         title: "Install Addon",
-        content: `ember install @lexio/ember-addon`,
-        code: `ember install @lexio/ember-addon`,
+        content: `# No package needed! Just add the script tag`,
+        code: `# No package needed! Just add the script tag`,
         tip: "Ember addon for integration"
       }
     ],
@@ -1814,15 +1782,15 @@ LEXIO_BOT_ID = 'your_bot_id'`,
       {
         number: 1,
         title: "Install Integration",
-        content: `npm install @lexio/astro-integration`,
-        code: `npm install @lexio/astro-integration`,
+        content: `# No NPM package needed! Just add the script tag`,
+        code: `# No NPM package needed! Just add the script tag`,
         tip: "JavaScript integration for Astro"
       },
       {
         number: 2,
         title: "Add to Layout",
         content: `<!-- src/layouts/Layout.astro -->
-import { LexioBot } from '@lexio/astro-integration'
+// No import needed - widget loads via script tag
 
 <html>
   <body>
@@ -1830,7 +1798,7 @@ import { LexioBot } from '@lexio/astro-integration'
   </body>
 </html>`,
         code: `---
-import { LexioBot } from '@lexio/astro-integration'
+// No import needed - widget loads via script tag
 ---
 
 <html>
@@ -1880,7 +1848,7 @@ window.lexioBot = {
 (function(w,d,s){
   var j=d.createElement(s);
   j.async=true;
-  j.src='https://cdn.lexio.com/w.js';
+  j.src='https://lexioai.pages.dev/widget.js';
   d.head.appendChild(j);
 })(window,document,'script');
 </script>`,
@@ -2010,10 +1978,10 @@ Add Lexio integration logic`,
       {
         number: 1,
         title: "Install in Frontend",
-        content: `npm install @lexio/react-widget
+        content: `# No NPM package needed! Just add the script tag
 
 Use same React integration as before`,
-        code: `npm install @lexio/react-widget`,
+        code: `# No NPM package needed! Just add the script tag`,
         tip: "Works with Next.js + Contentful"
       }
     ],

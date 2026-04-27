@@ -1,5 +1,11 @@
 import { useState } from 'react'
-import { Copy, Check, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
+import {
+  Copy, Check, ChevronDown, ChevronUp, ExternalLink,
+  Globe, FileCode, ShoppingCart, Sparkles, Square, Hexagon,
+  Atom, Triangle, Code2, CircleDot, Flame, Layers, Disc, Rocket, Grape,
+  FileJson, Braces, Gem, Hash, Coffee, Container,
+  Smartphone, Bug, Tag, Frame, CheckCircle2
+} from 'lucide-react'
 import toast from 'react-hot-toast'
 import Card from '../ui/Card'
 import Button from '../ui/Button'
@@ -12,7 +18,7 @@ const FRAMEWORKS = [
       {
         id: 'html',
         name: 'HTML',
-        icon: '🌐',
+        icon: Globe,
         description: 'Any static HTML website',
         getInstructions: (code) => [
           { title: 'Open your HTML file', desc: 'Open the HTML file where you want the chatbot to appear (e.g., index.html).' },
@@ -23,7 +29,7 @@ const FRAMEWORKS = [
       {
         id: 'wordpress',
         name: 'WordPress',
-        icon: '📝',
+        icon: FileCode,
         description: 'WordPress websites & blogs',
         getInstructions: (code) => [
           { title: 'Go to Theme Editor', desc: 'In WordPress Admin, go to Appearance → Theme File Editor → footer.php (or use a plugin like "Insert Headers and Footers").' },
@@ -34,7 +40,7 @@ const FRAMEWORKS = [
       {
         id: 'shopify',
         name: 'Shopify',
-        icon: '🛍️',
+        icon: ShoppingCart,
         description: 'Shopify stores',
         getInstructions: (code) => [
           { title: 'Open Theme Editor', desc: 'Go to Online Store → Themes → Actions → Edit Code.' },
@@ -45,7 +51,7 @@ const FRAMEWORKS = [
       {
         id: 'wix',
         name: 'Wix',
-        icon: '✨',
+        icon: Sparkles,
         description: 'Wix websites',
         getInstructions: (code) => [
           { title: 'Open Wix Settings', desc: 'Go to Settings → Custom Code (under Advanced).' },
@@ -56,7 +62,7 @@ const FRAMEWORKS = [
       {
         id: 'squarespace',
         name: 'Squarespace',
-        icon: '◾',
+        icon: Square,
         description: 'Squarespace websites',
         getInstructions: (code) => [
           { title: 'Open Code Injection', desc: 'Go to Settings → Advanced → Code Injection.' },
@@ -67,7 +73,7 @@ const FRAMEWORKS = [
       {
         id: 'webflow',
         name: 'Webflow',
-        icon: '🔷',
+        icon: Hexagon,
         description: 'Webflow websites',
         getInstructions: (code) => [
           { title: 'Open Project Settings', desc: 'Go to Project Settings → Custom Code tab.' },
@@ -83,7 +89,7 @@ const FRAMEWORKS = [
       {
         id: 'react',
         name: 'React',
-        icon: '⚛️',
+        icon: Atom,
         description: 'React (CRA / Vite)',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -116,7 +122,7 @@ function App() {
       {
         id: 'nextjs',
         name: 'Next.js',
-        icon: '▲',
+        icon: Triangle,
         description: 'Next.js (App Router / Pages Router)',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -167,7 +173,7 @@ export default function MyApp({ Component, pageProps }) {
       {
         id: 'vue',
         name: 'Vue.js',
-        icon: '💚',
+        icon: Code2,
         description: 'Vue 2 / Vue 3',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           { title: 'Option A: index.html', desc: 'Add to public/index.html or index.html before </body>:', code },
@@ -199,7 +205,7 @@ onUnmounted(() => {
       {
         id: 'angular',
         name: 'Angular',
-        icon: '🔴',
+        icon: CircleDot,
         description: 'Angular 14+',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -219,7 +225,7 @@ onUnmounted(() => {
       {
         id: 'svelte',
         name: 'Svelte / SvelteKit',
-        icon: '🧡',
+        icon: Flame,
         description: 'Svelte & SvelteKit',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -247,7 +253,7 @@ onUnmounted(() => {
       {
         id: 'nuxt',
         name: 'Nuxt.js',
-        icon: '💚',
+        icon: Layers,
         description: 'Nuxt 3',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -274,7 +280,7 @@ export default defineNuxtConfig({
       {
         id: 'remix',
         name: 'Remix',
-        icon: '💿',
+        icon: Disc,
         description: 'Remix framework',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -293,7 +299,7 @@ export default defineNuxtConfig({
       {
         id: 'astro',
         name: 'Astro',
-        icon: '🚀',
+        icon: Rocket,
         description: 'Astro framework',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -306,7 +312,7 @@ export default defineNuxtConfig({
       {
         id: 'gatsby',
         name: 'Gatsby',
-        icon: '💜',
+        icon: Grape,
         description: 'Gatsby framework',
         getInstructions: (code, embedKey, widgetUrl, apiBase) => [
           {
@@ -337,7 +343,7 @@ export const onRenderBody = ({ setPostBodyComponents }) => {
       {
         id: 'php',
         name: 'PHP',
-        icon: '🐘',
+        icon: FileJson,
         description: 'PHP / Laravel / CodeIgniter',
         getInstructions: (code) => [
           { title: 'Add to your layout', desc: 'In your main layout/template file, paste before </body>:', code },
@@ -348,7 +354,7 @@ export const onRenderBody = ({ setPostBodyComponents }) => {
       {
         id: 'python',
         name: 'Python',
-        icon: '🐍',
+        icon: Braces,
         description: 'Django / Flask / FastAPI',
         getInstructions: (code) => [
           { title: 'Django', desc: 'Add to your base template (base.html) before </body>:', code },
@@ -359,7 +365,7 @@ export const onRenderBody = ({ setPostBodyComponents }) => {
       {
         id: 'ruby',
         name: 'Ruby on Rails',
-        icon: '💎',
+        icon: Gem,
         description: 'Rails applications',
         getInstructions: (code) => [
           { title: 'Application layout', desc: 'Add to app/views/layouts/application.html.erb before </body>:', code },
@@ -368,7 +374,7 @@ export const onRenderBody = ({ setPostBodyComponents }) => {
       {
         id: 'dotnet',
         name: '.NET / Blazor',
-        icon: '🟣',
+        icon: Hash,
         description: 'ASP.NET / Blazor / Razor Pages',
         getInstructions: (code) => [
           { title: 'Shared layout', desc: 'For MVC: Add to Views/Shared/_Layout.cshtml before </body>.', code },
@@ -378,7 +384,7 @@ export const onRenderBody = ({ setPostBodyComponents }) => {
       {
         id: 'java',
         name: 'Java',
-        icon: '☕',
+        icon: Coffee,
         description: 'Spring Boot / JSP / Thymeleaf',
         getInstructions: (code) => [
           { title: 'Thymeleaf layout', desc: 'Add to your Thymeleaf layout template before </body>:', code },
@@ -388,7 +394,7 @@ export const onRenderBody = ({ setPostBodyComponents }) => {
       {
         id: 'go',
         name: 'Go',
-        icon: '🐹',
+        icon: Container,
         description: 'Go / Gin / Echo',
         getInstructions: (code) => [
           { title: 'HTML templates', desc: 'Add to your base HTML template before </body>:', code },
@@ -402,7 +408,7 @@ export const onRenderBody = ({ setPostBodyComponents }) => {
       {
         id: 'reactnative',
         name: 'React Native (WebView)',
-        icon: '📱',
+        icon: Smartphone,
         description: 'React Native apps',
         getInstructions: (_, embedKey, widgetUrl, apiBase) => [
           {
@@ -431,7 +437,7 @@ const ChatWidget = () => (
       {
         id: 'flutter',
         name: 'Flutter (WebView)',
-        icon: '🦋',
+        icon: Bug,
         description: 'Flutter apps',
         getInstructions: (_, embedKey, widgetUrl, apiBase) => [
           {
@@ -456,7 +462,7 @@ WebView(
       {
         id: 'gtm',
         name: 'Google Tag Manager',
-        icon: '🏷️',
+        icon: Tag,
         description: 'Via GTM container',
         getInstructions: (code) => [
           { title: 'Create new Tag', desc: 'In GTM, go to Tags → New → Custom HTML.' },
@@ -467,7 +473,7 @@ WebView(
       {
         id: 'iframe',
         name: 'iFrame Embed',
-        icon: '🖼️',
+        icon: Frame,
         description: 'Embed as inline iframe',
         getInstructions: (_, embedKey, widgetUrl, apiBase) => [
           {
@@ -583,7 +589,7 @@ export default function EmbedSetupGuide({ bot }) {
                         : 'border-[var(--border)] hover:border-[var(--primary-500)]/30'
                     }`}
                   >
-                    <span className="text-lg">{fw.icon}</span>
+                    <fw.icon size={20} className={activeFramework === fw.id ? 'text-[var(--primary-500)]' : 'text-[var(--text-muted)]'} />
                     <p className="text-sm font-medium mt-1">{fw.name}</p>
                     <p className="text-[10px] text-[var(--text-muted)] mt-0.5 line-clamp-1">{fw.description}</p>
                   </button>
@@ -598,7 +604,9 @@ export default function EmbedSetupGuide({ bot }) {
       {activeData && (
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">{activeData.icon}</span>
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--primary-500)]/10">
+              <activeData.icon size={18} className="text-[var(--primary-500)]" />
+            </span>
             <div>
               <p className="text-sm font-semibold">{activeData.name} Setup Guide</p>
               <p className="text-xs text-[var(--text-muted)]">{activeData.description}</p>
