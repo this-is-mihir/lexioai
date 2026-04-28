@@ -11,7 +11,7 @@ const BlogDetailPage = lazy(() => import('./pages/public/BlogDetailPage'))
 const PricingPage = lazy(() => import('./pages/public/PricingPage'))
 const TermsPage = lazy(() => import('./pages/public/TermsPage'))
 const PrivacyPage = lazy(() => import('./pages/public/PrivacyPage'))
-const ChangelogPage = lazy(() => import('./pages/public/ChangelogPage'))
+
 const SetupGuide = lazy(() => import('./pages/public/SetupGuide'))
 const HelpCenter = lazy(() => import('./pages/public/HelpCenter'))
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'))
@@ -130,7 +130,7 @@ export default function App() {
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/changelog" element={<ChangelogPage />} />
+
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

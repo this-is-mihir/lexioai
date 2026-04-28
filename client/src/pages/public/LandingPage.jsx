@@ -154,7 +154,6 @@ const whyChooseLexio = [
 const footerLinks = [
   { label: 'Pricing', to: '/pricing' },
   { label: 'Contact us', href: 'mailto:support@lexioai.com' },
-  { label: 'Changelog', to: '/changelog' },
   { label: 'Privacy policy', to: '/privacy' },
   { label: 'Terms of service', to: '/terms' },
   { label: 'Blog', to: '/blog' },
