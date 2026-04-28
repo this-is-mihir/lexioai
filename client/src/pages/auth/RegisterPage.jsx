@@ -100,8 +100,8 @@ export default function RegisterPage() {
         disabled={!registrationsOpen}
         onClick={() => {
           if (!registrationsOpen) return
-          const base = import.meta.env.VITE_API_URL || '/api/v1'
-          window.location.href = `${base}/auth/google`
+          const base = import.meta.env.VITE_API_URL || ''
+          window.location.href = `${base}/api/v1/auth/google`
         }}
       >
         <GoogleIcon /> Continue with Google
