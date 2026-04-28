@@ -37,21 +37,32 @@ passport.use(
         let user = await User.findOne({ email }).select("+refreshTokens");
 
         if (!user) {
-          // Email registered nahi hai
-          return done(null, false, {
-            message: "This email is not registered. Please sign up first.",
-          });
-        }
-
-        // Email se account hai but Google se nahi banaya
-        if (!user.googleId) {
-          user.googleId = googleId;
-          if (!user.avatar && avatar) {
-            user.avatar = avatar;
+          // New user — auto-register via Google
+          // Check if new registrations are allowed
+          if (generalSettings?.allowNewRegistrations === false) {
+            return done(null, false, {
+              message: "New registrations are currently disabled. Please contact support.",
+            });
           }
-          // Email already verified hai — Google se confirm
-          user.isEmailVerified = true;
-          await user.save();
+
+          user = await User.create({
+            firstName,
+            lastName,
+            email,
+            googleId,
+            avatar,
+            isEmailVerified: true, // Google email is already verified
+          });
+        } else {
+          // Existing user — link Google if not already linked
+          if (!user.googleId) {
+            user.googleId = googleId;
+            if (!user.avatar && avatar) {
+              user.avatar = avatar;
+            }
+            user.isEmailVerified = true;
+            await user.save();
+          }
         }
 
         // Banned check
