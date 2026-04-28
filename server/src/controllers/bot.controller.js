@@ -157,8 +157,18 @@ const createBot = async (req, res) => {
     });
   } catch (error) {
     console.error("Create bot error:", error);
+    
+    // Check if it's a Mongoose validation error
+    if (error.name === "ValidationError") {
+      const errorMessages = Object.values(error.errors).map(err => ({
+        field: err.path || "general",
+        message: err.message
+      }));
+      return validationErrorResponse(res, errorMessages);
+    }
+    
     return errorResponse(res, {
-      message: "Failed to create bot. Please try again.",
+      message: `Failed to create bot: ${error.message || 'Please try again.'}`,
     });
   }
 };
