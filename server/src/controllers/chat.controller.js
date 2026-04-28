@@ -97,16 +97,23 @@ const callGroqWithKey = async (decryptedKey, model, systemPrompt, messages, user
 // ================================================================
 // HELPER — Intelligent Queue-Based AI Response (Multi-Key Fallback)
 // ================================================================
-const getAIResponse = async (bot, messages, userMessage) => {
+const getAIResponse = async (bot, messages, userMessage, options = {}) => {
   const AIKey = require("../models/AIKey.model");
-  const systemPrompt = `${bot.systemPrompt || `You are ${bot.name}, a helpful assistant.`}
+  const { quickLink = null } = options;
 
-FORMAT RULES:
-1. Keep answers detailed but easy to read.
-2. Prefer short sections or numbered points over one long paragraph.
-3. For list-style questions (projects, features, steps, options), use numbered list.
-4. Keep each point concise: title first, then a short explanation.
-5. Avoid unnecessary intro/outro lines.`;
+  let quickLinkHint = "";
+  if (quickLink?.url) {
+    quickLinkHint = `\n\nRELEVANT LINK: A relevant link is available for this query: ${quickLink.url} (type: ${quickLink.intent}). Naturally include this link in your response along with relevant explanation. Do not return just the link alone.`;
+  }
+
+  const systemPrompt = `${bot.systemPrompt || `You are ${bot.name}, a helpful assistant.`}${quickLinkHint}
+
+RESPONSE STYLE:
+1. Be conversational and natural — respond like a helpful person, not a robot.
+2. For simple questions, give a direct answer in 2-4 sentences.
+3. For list-style questions, use a brief intro followed by a numbered list.
+4. Keep each list item concise.
+5. If a link is relevant, weave it naturally into your answer.`;
 
   try {
     // 1. Database से सब active keys fetch करो
@@ -486,41 +493,13 @@ const sendMessage = async (req, res) => {
     const detectedLang = detectLanguage(message);
     conversation.language = detectedLang;
 
+    // Check for quick link context — pass to AI instead of bypassing
+    let quickLinkContext = null;
     const linkIntent = getMessageIntent(message);
     if (linkIntent) {
       const quickLink = getQuickLinkByIntent(bot, linkIntent);
       if (quickLink) {
-        const quickReply = buildQuickLinkResponse({
-          intent: linkIntent,
-          url: quickLink,
-          language: detectedLang,
-        });
-
-        const botMsg = {
-          role: "bot",
-          content: quickReply,
-          isAnswered: true,
-          responseTime: 0,
-          aiModel: "link-resolver",
-        };
-        conversation.messages.push(botMsg);
-        conversation.totalMessages += 2;
-
-        await Bot.findByIdAndUpdate(bot._id, {
-          $inc: { "stats.totalMessages": 2 },
-        });
-        await conversation.save();
-
-        return successResponse(res, {
-          data: {
-            conversationId: conversation._id,
-            message: quickReply,
-            model: "link-resolver",
-            isAnswered: true,
-            responseTime: 0,
-            totalMessages: conversation.totalMessages,
-          },
-        });
+        quickLinkContext = { intent: linkIntent, url: quickLink };
       }
     }
 
@@ -528,9 +507,9 @@ const sendMessage = async (req, res) => {
     const startTime = Date.now();
     const { response: aiResponse, model } = await getAIResponse(
       bot,
-      conversation.messages.slice(0, -1), // User message ke pehle ki history
+      conversation.messages.slice(0, -1),
       message.trim(),
-      { replyLanguage: detectedLang }
+      { replyLanguage: detectedLang, quickLink: quickLinkContext }
     );
     const formattedReply = formatAssistantReply(aiResponse);
     const responseTime = Date.now() - startTime;

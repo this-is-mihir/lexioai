@@ -122,21 +122,29 @@ const getLanguageInstruction = (replyLanguage) => {
 
 const getFormatInstruction = () =>
   [
-    "FORMAT RULES:",
-    "1. Keep answers detailed but well-structured and easy to scan.",
-    "2. Prefer short sections or numbered points instead of one long paragraph.",
-    "3. For list-style questions (projects, features, steps, options), use numbered list.",
-    "4. Each point should be concise: title first, then 1 short explanatory sentence.",
-    "5. Avoid unnecessary intro/outro lines.",
+    "RESPONSE STYLE:",
+    "1. Be conversational and natural — respond like a helpful person, not a robot or search engine.",
+    "2. For simple questions, give a direct answer in 2-4 sentences.",
+    "3. For list-style questions (features, steps, products, options), use a brief intro line followed by a numbered or bulleted list.",
+    "4. Keep each list item concise — title first, then a short explanation.",
+    "5. If a relevant link exists, weave it naturally into your answer — never dump a link alone without context.",
+    "6. Don't start responses with filler like 'Great question!' or 'Sure!' — get to the point naturally.",
+    "7. Override any earlier formatting rules that conflict with being conversational.",
   ].join("\n");
 
 const getAIResponse = async (bot, conversationMessages, userMessage, options = {}) => {
-  const { replyLanguage = "auto" } = options;
+  const { replyLanguage = "auto", quickLink = null } = options;
 
   const basePrompt =
     bot.systemPrompt ||
     `You are ${bot.name}, a helpful assistant for ${bot.websiteName || "this website"}.`;
-  const systemPrompt = `${basePrompt}\n\nLANGUAGE RULE: ${getLanguageInstruction(replyLanguage)}\n\n${getFormatInstruction()}`;
+
+  let quickLinkHint = "";
+  if (quickLink?.url) {
+    quickLinkHint = `\n\nRELEVANT LINK: A relevant link is available for this query: ${quickLink.url} (type: ${quickLink.intent}). Naturally include this link in your response along with relevant explanation from your knowledge base. Do not return just the link alone.`;
+  }
+
+  const systemPrompt = `${basePrompt}${quickLinkHint}\n\nLANGUAGE RULE: ${getLanguageInstruction(replyLanguage)}\n\n${getFormatInstruction()}`;
 
   // ----------------------------------------------------------------
   // Step 1: Saare active providers ke keys fetch karo

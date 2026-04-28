@@ -432,41 +432,13 @@ const sendWidgetMessage = async (req, res) => {
     const lang = detectLanguage(message);
     conversation.language = lang;
 
+    // Check for quick link context — pass to AI instead of bypassing
+    let quickLinkContext = null;
     const linkIntent = getMessageIntent(message);
     if (linkIntent) {
       const quickLink = getQuickLinkByIntent(bot, linkIntent);
       if (quickLink) {
-        const quickReply = buildQuickLinkResponse({
-          intent: linkIntent,
-          url: quickLink,
-          language: lang,
-        });
-
-        conversation.messages.push({
-          role: "bot",
-          content: quickReply,
-          isAnswered: true,
-          responseTime: 0,
-          aiModel: "link-resolver",
-        });
-        conversation.totalMessages += 2;
-
-        await Bot.findByIdAndUpdate(bot._id, {
-          $inc: { "stats.totalMessages": 2 },
-        });
-        await conversation.save();
-
-        return successResponse(res, {
-          data: {
-            conversationId: conversation._id,
-            reply: quickReply,
-            model: "link-resolver",
-            isAnswered: true,
-            responseTime: 0,
-            totalMessages: conversation.messages.length,
-            leadCaptureRequired: bot.leadCapture?.enabled || false,
-          },
-        });
+        quickLinkContext = { intent: linkIntent, url: quickLink };
       }
     }
 
@@ -476,7 +448,7 @@ const sendWidgetMessage = async (req, res) => {
       bot,
       conversation.messages.slice(0, -1),
       message.trim(),
-      { replyLanguage: lang },
+      { replyLanguage: lang, quickLink: quickLinkContext },
     );
     const formattedReply = formatAssistantReply(aiResponse);
     const responseTime = Date.now() - startTime;
