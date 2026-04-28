@@ -49,12 +49,19 @@ const allowedOrigins = (process.env.CORS_ORIGINS || "")
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-  callback(null, true);
-} else {
-  console.log("Blocked CORS:", origin);
-  callback(null, true); // TEMP: sab allow (debug ke liye)
-}
+      // No origin = server-to-server or same-origin (always allow)
+      if (!origin) return callback(null, true);
+
+      // Check if origin is in allowed list
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+
+      // In development, allow all origins for easy debugging
+      if (process.env.NODE_ENV === "development") {
+        return callback(null, true);
+      }
+
+      // Production: block unknown origins
+      callback(new Error(`CORS blocked: ${origin}`));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
