@@ -166,7 +166,6 @@ const register = async (req, res) => {
       deviceFingerprint: fingerprint || null,
     });
 
-    user.generateReferralCode();
     setOTP(user, otp);
     await user.save();
     await sendOTPEmail(user, otp);

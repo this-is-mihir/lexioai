@@ -415,6 +415,19 @@ userSchema.pre("save", async function () {
 
   // Profile completion calculate
   this.profileCompletion = calculateProfileCompletion(this);
+
+  // Auto-generate unique fields if missing to prevent MongoDB duplicate null errors
+  if (!this.referralCode) {
+    this.generateReferralCode();
+  }
+  
+  if (!this.username) {
+    this.username = `user_${this._id.toString()}`;
+  }
+
+  if (!this.publicProfileSlug) {
+    this.publicProfileSlug = `profile_${this._id.toString()}`;
+  }
 });
 
 // ----------------------------------------------------------------
