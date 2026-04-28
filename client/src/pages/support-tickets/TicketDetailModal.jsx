@@ -374,7 +374,7 @@ export default function TicketDetailModal({ ticket, onClose, onReplyAdded }) {
             {/* Input row */}
             <div className="flex items-center gap-2">
               <label
-                className="flex-shrink-0 w-10 h-10 rounded-xl bg-[var(--bg-soft)] hover:bg-[var(--bg-soft)]/80 cursor-pointer transition text-[var(--text-muted)] hover:text-[var(--text)] border border-[var(--border)] flex items-center justify-center"
+                className="flex-shrink-0 w-10 h-10 rounded-xl bg-[var(--bg-soft)] cursor-pointer transition text-[var(--text-muted)] hover:text-[var(--text)] border border-[var(--border)] flex items-center justify-center"
                 title="Attach screenshot (Max 2MB)"
               >
                 <Paperclip size={16} />
@@ -389,16 +389,15 @@ export default function TicketDetailModal({ ticket, onClose, onReplyAdded }) {
               </label>
 
               <div className="flex-1">
-                <textarea
+                <input
                   ref={textareaRef}
+                  type="text"
                   value={replyMessage}
                   onChange={(e) => setReplyMessage(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Type your reply..."
                   disabled={isReplying || uploadingReplyScreenshot}
-                  className="w-full h-10 px-4 py-2.5 bg-[var(--bg-soft)] text-[var(--text)] placeholder-[var(--text-muted)] rounded-xl border border-[var(--border)] focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500/40 resize-none text-sm transition leading-5"
-                  rows={1}
-                  style={{ maxHeight: '120px' }}
+                  className="w-full h-10 px-4 bg-[var(--bg-soft)] text-[var(--text)] placeholder-[var(--text-muted)] rounded-xl border border-[var(--border)] focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500/40 text-sm"
                 />
               </div>
 
