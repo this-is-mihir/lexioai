@@ -5,6 +5,10 @@
       "dest": "/assets/$1"
     },
     {
+      "src": "/(.*\\.(ico|png|svg|jpg|jpeg|gif|webp|webmanifest|json|txt|xml|css|js|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
