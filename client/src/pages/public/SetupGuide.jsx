@@ -80,7 +80,7 @@ export default function SetupGuide() {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <PublicNavbar />
 
-      <main className="relative px-4 py-10 sm:px-6 lg:px-8">
+      <main className="relative overflow-hidden px-4 py-10 sm:px-6 lg:px-8">
         {/* Glow effects */}
         <div className="pointer-events-none absolute -left-32 top-0 h-80 w-80 rounded-full bg-primary-500/8 blur-[100px]" />
         <div className="pointer-events-none absolute -right-24 top-40 h-64 w-64 rounded-full bg-indigo-500/6 blur-[80px]" />
