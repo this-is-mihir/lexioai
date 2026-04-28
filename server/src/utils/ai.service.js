@@ -129,7 +129,7 @@ const getFormatInstruction = () =>
     "4. Keep each list item concise — title first, then a short explanation.",
     "5. If a relevant link exists, weave it naturally into your answer — never dump a link alone without context.",
     "6. Don't start responses with filler like 'Great question!' or 'Sure!' — get to the point naturally.",
-    "7. Override any earlier formatting rules that conflict with being conversational.",
+    "7. IMPORTANT: Only mention information that exists in your knowledge base. Do not add details from your own training data or general knowledge.",
   ].join("\n");
 
 const getAIResponse = async (bot, conversationMessages, userMessage, options = {}) => {
