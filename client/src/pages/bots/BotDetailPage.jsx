@@ -591,7 +591,7 @@ export default function BotDetailPage() {
 
               <Card>
                 <p className="text-sm font-semibold">Training Sources</p>
-                <p className="text-xs text-[var(--text-muted)] mt-1">(If status doesn't update, refresh after 30 seconds)</p>
+                <p className="text-xs text-[var(--text-muted)] mt-1">(If status doesn't update, refresh after 1 minute)</p>
                 <div className="mt-3 space-y-2">
                   {trainingData.length === 0 ? (
                     <p className="text-sm text-[var(--text-muted)]">No training sources yet.</p>
