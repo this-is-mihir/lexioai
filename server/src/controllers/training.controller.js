@@ -1,7 +1,8 @@
 const Bot = require("../models/Bot.model");
 const cloudinary = require("cloudinary").v2;
 const axios = require("axios");
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium");
 const cheerio = require("cheerio");
 const PDFParser = require("pdf2json");
 const mammoth = require("mammoth");
@@ -271,13 +272,10 @@ const crawlUrl = async (url, maxPages = 1) => {
   let browser = null;
   try {
     browser = await puppeteer.launch({
-      headless: "new",
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-      ],
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     });
   } catch (err) {
     console.error("Puppeteer launch failed:", err.message);
