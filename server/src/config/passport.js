@@ -45,12 +45,22 @@ passport.use(
             });
           }
 
+          // Generate unique username from email
+          const baseUsername = email.split("@")[0].toLowerCase().replace(/[^a-z0-9_\.]/g, "").substring(0, 20);
+          let username = baseUsername;
+          let suffix = 1;
+          while (await User.findOne({ username })) {
+            username = `${baseUsername}${suffix}`;
+            suffix++;
+          }
+
           user = await User.create({
             firstName,
             lastName,
             email,
             googleId,
             avatar,
+            username,
             isEmailVerified: true, // Google email is already verified
           });
         } else {
