@@ -46,6 +46,12 @@ const allowedOrigins = (process.env.CORS_ORIGINS || "")
   .map((o) => o.trim())
   .filter(Boolean);
 
+// Widget & public routes — open CORS (widget embeds on any customer website)
+const openCorsRoutes = ["/api/v1/widget", "/api/v1/public"];
+
+const isOpenCorsRoute = (path) =>
+  openCorsRoutes.some((prefix) => path.startsWith(prefix));
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -60,14 +66,35 @@ app.use(
         return callback(null, true);
       }
 
-      // Production: block unknown origins
-      callback(new Error(`CORS blocked: ${origin}`));
+      // Allow all origins for widget/public routes (checked per-request below)
+      // Block unknown origins for all other routes
+      callback(null, true); // Let per-route middleware handle it
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Per-route CORS enforcement (after cors() middleware)
+app.use((req, res, next) => {
+  // Skip in development
+  if (process.env.NODE_ENV === "development") return next();
+
+  // Widget & public routes allow any origin
+  if (isOpenCorsRoute(req.path)) return next();
+
+  // For protected routes, check origin strictly
+  const origin = req.headers.origin;
+  if (origin && !allowedOrigins.includes(origin)) {
+    return res.status(403).json({
+      success: false,
+      message: "Origin not allowed.",
+    });
+  }
+
+  next();
+});
 
 // ----------------------------------------------------------------
 // BODY PARSER
