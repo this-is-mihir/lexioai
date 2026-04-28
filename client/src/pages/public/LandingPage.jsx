@@ -618,11 +618,7 @@ export default function LandingPage() {
           <div className="mt-10 border-t border-[var(--border)] pt-6 dark:border-white/10">
             <div className="flex flex-col items-start gap-3 text-sm text-[var(--text-muted)] dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
               <p>Built for modern customer conversations with reliable AI behavior.</p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/terms" className="transition hover:text-primary-500">Terms</Link>
-                <Link to="/privacy" className="transition hover:text-primary-500">Privacy</Link>
-                <Link to="/changelog" className="transition hover:text-primary-500">Updates</Link>
-              </div>
+              
             </div>
           </div>
 
