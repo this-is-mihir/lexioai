@@ -136,6 +136,16 @@ const getCouponDiscount = async ({ code, planName, billingCycle, originalAmount,
   if (!coupon)       throw { statusCode: 404, message: "Invalid coupon code." };
   if (!coupon.isActive) throw { statusCode: 400, message: "This coupon is no longer active." };
 
+  // Check if coupon is restricted to a specific user
+  if (coupon.specificUserId && coupon.specificUserId.toString() !== userId.toString()) {
+    throw { statusCode: 403, message: "This coupon is not available for your account." };
+  }
+
+  // Check validFrom — coupon should not be usable before start date
+  if (coupon.validFrom && new Date(coupon.validFrom) > new Date()) {
+    throw { statusCode: 400, message: "This coupon is not yet active." };
+  }
+
   // Check expiry
   if (coupon.validUntil && new Date(coupon.validUntil) < new Date()) {
     throw { statusCode: 400, message: "This coupon has expired." };
@@ -1100,9 +1110,12 @@ const handleWebhook = async (req, res) => {
   try {
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
     const signature   = req.headers["x-razorpay-signature"];
+
+    // Use raw body buffer for HMAC — guaranteed byte-identical to what Razorpay signed
+    const bodyForHmac = req.rawBody || JSON.stringify(req.body);
     const expectedSig = crypto
       .createHmac("sha256", webhookSecret)
-      .update(JSON.stringify(req.body))
+      .update(bodyForHmac)
       .digest("hex");
 
     if (signature !== expectedSig) {

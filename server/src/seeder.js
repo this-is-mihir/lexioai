@@ -130,7 +130,7 @@ const seedDefaultPlans = async () => {
         yearlyDiscountPercent: 17,
         limits: {
           bots: 3,
-          chatsPerMonth: 500,
+          chatsPerMonth: 100,
           trainingUrlPages: 50,
           trainingFiles: 10,
           leadCapture: true,
@@ -144,7 +144,7 @@ const seedDefaultPlans = async () => {
         },
         features: [
           "3 Bots",
-          "500 chats/month",
+          "100 chats/month",
           "URL training (50 pages)",
           "10 file uploads (PDF/DOCX)",
           "Lead capture",
@@ -168,7 +168,7 @@ const seedDefaultPlans = async () => {
         yearlyDiscountPercent: 17,
         limits: {
           bots: 10,
-          chatsPerMonth: 2000,
+          chatsPerMonth: 300,
           trainingUrlPages: 100,
           trainingFiles: 15,
           leadCapture: true,
@@ -182,7 +182,7 @@ const seedDefaultPlans = async () => {
         },
         features: [
           "10 Bots",
-          "2,000 chats/month",
+          "300 chats/month",
           "URL training (100 pages)",
           "15 file uploads (PDF/DOCX)",
           "Lead capture + export",
@@ -207,7 +207,7 @@ const seedDefaultPlans = async () => {
         yearlyDiscountPercent: 17,
         limits: {
           bots: 20,
-          chatsPerMonth: 10000,
+          chatsPerMonth: 2000,
           trainingUrlPages: 200,
           trainingFiles: 25,
           leadCapture: true,
@@ -221,7 +221,7 @@ const seedDefaultPlans = async () => {
         },
         features: [
           "20 Bots",
-          "10,000 chats/month",
+          "2,000 chats/month",
           "URL training (200 pages)",
           "25 file uploads (PDF/DOCX)",
           "Webhooks & API access",

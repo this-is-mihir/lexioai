@@ -28,9 +28,9 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // ----------------------------------------------------------------
 const CHAT_LIMITS = {
   free: 50,
-  starter: 500,
-  pro: 2000,
-  business: 10000,
+  starter: 100,
+  pro: 300,
+  business: 2000,
 };
 
 // ----------------------------------------------------------------

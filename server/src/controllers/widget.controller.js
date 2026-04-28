@@ -251,9 +251,9 @@ const startWidgetConversation = async (req, res) => {
     // Chat limit check
     const CHAT_LIMITS = {
       free: 50,
-      starter: 500,
-      pro: 2000,
-      business: 10000,
+      starter: 100,
+      pro: 300,
+      business: 2000,
     };
 
     // Bot owner ka plan check karo

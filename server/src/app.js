@@ -65,7 +65,15 @@ app.use(
 // ----------------------------------------------------------------
 // BODY PARSER
 // ----------------------------------------------------------------
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({
+  limit: "10mb",
+  verify: (req, _res, buf) => {
+    // Save raw body for Razorpay webhook signature verification
+    if (req.originalUrl === "/api/v1/payments/webhook") {
+      req.rawBody = buf;
+    }
+  },
+}));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 

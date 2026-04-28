@@ -11,9 +11,9 @@ import Loader from '../../components/ui/Loader'
 
 const fallbackPlans = [
   { name: 'free', displayName: 'Free', pricing: { INR: { monthly: 0, yearly: 0 }, USD: { monthly: 0, yearly: 0 } }, features: ['1 bot', '50 chats/month'], isPopular: false },
-  { name: 'starter', displayName: 'Starter', pricing: { INR: { monthly: 399, yearly: 3990 }, USD: { monthly: 5, yearly: 48 } }, features: ['3 bots', '500 chats/month'], isPopular: false },
-  { name: 'pro', displayName: 'Pro', pricing: { INR: { monthly: 899, yearly: 8990 }, USD: { monthly: 11, yearly: 108 } }, features: ['10 bots', '2000 chats/month'], isPopular: true },
-  { name: 'business', displayName: 'Business', pricing: { INR: { monthly: 2999, yearly: 29990 }, USD: { monthly: 36, yearly: 360 } }, features: ['Unlimited bots', '10000 chats/month'], isPopular: false },
+  { name: 'starter', displayName: 'Starter', pricing: { INR: { monthly: 399, yearly: 3990 }, USD: { monthly: 5, yearly: 48 } }, features: ['3 bots', '100 chats/month'], isPopular: false },
+  { name: 'pro', displayName: 'Pro', pricing: { INR: { monthly: 899, yearly: 8990 }, USD: { monthly: 11, yearly: 108 } }, features: ['10 bots', '300 chats/month'], isPopular: true },
+  { name: 'business', displayName: 'Business', pricing: { INR: { monthly: 2999, yearly: 29990 }, USD: { monthly: 36, yearly: 360 } }, features: ['20 bots', '2,000 chats/month'], isPopular: false },
 ]
 
 const planThemes = {
@@ -390,7 +390,7 @@ export default function BillingPage() {
             packageId: pkg._id,
           })
 
-          const newBalance = verifyRes?.data?.data?.chatCredits
+          const newBalance = verifyRes?.data?.data?.totalCredits
           if (typeof newBalance === 'number') {
             setCredits(newBalance)
           }

@@ -11,9 +11,9 @@ import PublicFooter from '../../components/layout/PublicFooter'
 
 const fallbackPlans = [
   { name: 'free', displayName: 'Free', isPopular: false, pricing: { INR: { monthly: 0 }, USD: { monthly: 0 } }, limits: { bots: 1, chatsPerMonth: 50 }, features: ['1 bot', '50 chats/month', 'Watermark enabled'] },
-  { name: 'starter', displayName: 'Starter', isPopular: false, pricing: { INR: { monthly: 399 }, USD: { monthly: 5 } }, limits: { bots: 3, chatsPerMonth: 500 }, features: ['10 file uploads', 'Lead capture', 'Basic analytics', 'Powered by Lexioai badge'] },
-  { name: 'pro', displayName: 'Pro', isPopular: true, pricing: { INR: { monthly: 899 }, USD: { monthly: 11 } }, limits: { bots: 10, chatsPerMonth: 2000 }, features: ['15 file uploads', 'HINDI', 'Advanced analytics', 'Lead export', 'No Lexioai badge'] },
-  { name: 'business', displayName: 'Business', isPopular: false, pricing: { INR: { monthly: 2999 }, USD: { monthly: 36 } }, limits: { bots: 20, chatsPerMonth: 10000 }, features: ['25 file uploads', 'White label', 'Webhooks & API access', 'Dedicated support'] },
+  { name: 'starter', displayName: 'Starter', isPopular: false, pricing: { INR: { monthly: 399 }, USD: { monthly: 5 } }, limits: { bots: 3, chatsPerMonth: 100 }, features: ['10 file uploads', 'Lead capture', 'Basic analytics', 'Powered by Lexioai badge'] },
+  { name: 'pro', displayName: 'Pro', isPopular: true, pricing: { INR: { monthly: 899 }, USD: { monthly: 11 } }, limits: { bots: 10, chatsPerMonth: 300 }, features: ['15 file uploads', 'HINDI', 'Advanced analytics', 'Lead export', 'No Lexioai badge'] },
+  { name: 'business', displayName: 'Business', isPopular: false, pricing: { INR: { monthly: 2999 }, USD: { monthly: 36 } }, limits: { bots: 20, chatsPerMonth: 2000 }, features: ['25 file uploads', 'White label', 'Webhooks & API access', 'Dedicated support'] },
 ]
 
 const CURRENCIES = ['INR', 'USD']
