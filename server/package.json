@@ -15,7 +15,9 @@
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^5.1.0",
     "@google/generative-ai": "^0.24.1",
+    "@mozilla/readability": "^0.6.0",
     "@sentry/node": "^10.43.0",
+    "@sparticuz/chromium": "^131.0.1",
     "axios": "^1.13.6",
     "bcryptjs": "^3.0.3",
     "cheerio": "^1.2.0",
@@ -29,6 +31,7 @@
     "express-validator": "^7.3.1",
     "groq-sdk": "^1.1.1",
     "helmet": "^8.1.0",
+    "jsdom": "^29.1.0",
     "jsonwebtoken": "^9.0.3",
     "mammoth": "^1.12.0",
     "mongoose": "^9.3.0",
@@ -41,11 +44,11 @@
     "pdf-parse": "^2.4.5",
     "pdf2json": "^4.0.2",
     "puppeteer-core": "^24.39.1",
-    "@sparticuz/chromium": "^131.0.1",
     "qrcode": "^1.5.4",
     "razorpay": "^2.9.6",
     "speakeasy": "^2.0.0",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

@@ -6,6 +6,9 @@ const chromium = require("@sparticuz/chromium");
 const cheerio = require("cheerio");
 const PDFParser = require("pdf2json");
 const mammoth = require("mammoth");
+const { Readability } = require("@mozilla/readability");
+const { JSDOM } = require("jsdom");
+const xml2js = require("xml2js");
 
 const {
   successResponse,
@@ -115,6 +118,38 @@ const getBotAndVerify = async (botId, userId) => {
 };
 
 // ----------------------------------------------------------------
+// HELPER — Fetch and parse sitemap.xml
+// ----------------------------------------------------------------
+const fetchSitemap = async (baseUrl) => {
+  try {
+    const sitemapUrl = new URL("/sitemap.xml", baseUrl).href;
+    const response = await axios.get(sitemapUrl, { timeout: 10000 });
+    
+    if (response.status !== 200) return [];
+    
+    const parser = new xml2js.Parser();
+    const result = await parser.parseStringPromise(response.data);
+    
+    const urls = [];
+    if (result.urlset && result.urlset.url) {
+      result.urlset.url.forEach(u => {
+        if (u.loc && u.loc[0]) {
+          urls.push(u.loc[0]);
+        }
+      });
+    } else if (result.sitemapindex && result.sitemapindex.sitemap) {
+      // It's a sitemap index, we could theoretically fetch them all, but let's just return empty for simplicity or handle first level.
+      // For basic implementation, we just return empty if it's an index to fall back to crawling.
+      return [];
+    }
+    
+    return urls;
+  } catch (err) {
+    return [];
+  }
+};
+
+// ----------------------------------------------------------------
 // HELPER — Puppeteer se page fetch karo (React/Vue/Angular sites)
 // ----------------------------------------------------------------
 const fetchPageWithPuppeteer = async (browser, url) => {
@@ -144,12 +179,41 @@ const fetchPageWithPuppeteer = async (browser, url) => {
     await new Promise((r) => setTimeout(r, 1500));
 
     const data = await page.evaluate(() => {
-      // Remove noise elements
+      // 1. EXTRACT LINKS FIRST (Before deleting nav/footer so we don't miss anything)
+      // Including Angular/React specific attributes for SPAs
+      const rawLinks = [];
+      
+      // Standard a tags
+      document.querySelectorAll("a[href]").forEach(a => rawLinks.push(a.getAttribute("href") || a.href));
+      
+      // SPA specific attributes
+      document.querySelectorAll("[routerLink], [ng-href], [data-href], [to]").forEach(el => {
+        rawLinks.push(
+          el.getAttribute("routerLink") || 
+          el.getAttribute("ng-href") || 
+          el.getAttribute("data-href") || 
+          el.getAttribute("to")
+        );
+      });
+
+      const links = Array.from(new Set(rawLinks))
+        .filter(href => href && href.length > 1 && !href.startsWith("javascript:") && !href.startsWith("mailto:") && !href.startsWith("tel:"))
+        // Convert relative to absolute using absolute URL resolution trick
+        .map(href => {
+          try {
+            return new URL(href, document.baseURI).href;
+          } catch {
+            return null;
+          }
+        })
+        .filter(href => href && href.startsWith("http"));
+
+      // 2. Remove noise elements
       const removeSelectors = [
-        "script", "style", "nav", "iframe", "noscript",
-        ".cookie-banner", "#cookie-banner",
+        "script", "style", "nav", "header", "footer", "iframe", "noscript",
+        "aside", ".sidebar", ".menu", ".cookie-banner", "#cookie-banner",
         ".advertisement", ".ads", "#ads", ".popup", ".modal",
-        "[aria-hidden='true']",
+        "[aria-hidden='true']", "[role='navigation']"
       ];
       removeSelectors.forEach((sel) => {
         document.querySelectorAll(sel).forEach((el) => el.remove());
@@ -182,14 +246,14 @@ const fetchPageWithPuppeteer = async (browser, url) => {
 
       // Extract main content (fallback)
       let content = "";
-      const selectors = [
+      const contentSelectors = [
         "main", "article", '[role="main"]',
         ".main-content", "#main-content", ".content",
         "#content", ".post-content", ".entry-content",
         ".page-content", "body",
       ];
 
-      for (const sel of selectors) {
+      for (const sel of contentSelectors) {
         const el = document.querySelector(sel);
         if (el) {
           const text = el.innerText?.replace(/\s+/g, " ").trim();
@@ -199,11 +263,6 @@ const fetchPageWithPuppeteer = async (browser, url) => {
           }
         }
       }
-
-      // Extract links
-      const links = Array.from(document.querySelectorAll("a[href]"))
-        .map((a) => a.href)
-        .filter((href) => href && href.startsWith("http"));
 
       // Extract image alt texts (useful info about products/projects)
       const imageAlts = Array.from(document.querySelectorAll("img[alt]"))
@@ -236,9 +295,32 @@ const fetchPageWithAxios = async (url) => {
 
   const $ = cheerio.load(response.data);
 
+  // 1. EXTRACT LINKS FIRST
+  const rawLinks = [];
+  $("a[href], [routerLink], [ng-href], [data-href], [to]").each((_, el) => {
+    const href = $(el).attr("href") || 
+                 $(el).attr("routerLink") || 
+                 $(el).attr("ng-href") || 
+                 $(el).attr("data-href") || 
+                 $(el).attr("to");
+    if (href && href.length > 1 && !href.startsWith("javascript:") && !href.startsWith("mailto:") && !href.startsWith("tel:")) {
+      try {
+        const absoluteUrl = new URL(href, url).href;
+        if (absoluteUrl.startsWith("http")) {
+          rawLinks.push(absoluteUrl);
+        }
+      } catch (e) {
+        // Ignore invalid URLs
+      }
+    }
+  });
+  const links = Array.from(new Set(rawLinks));
+
+  // 2. Remove noise elements
   $(
     "script, style, nav, footer, header, iframe, noscript, " +
-    ".cookie-banner, #cookie-banner, .advertisement, .ads"
+    "aside, .sidebar, .menu, .cookie-banner, #cookie-banner, .advertisement, .ads, " +
+    "[role='navigation']"
   ).remove();
 
   const title = $("title").text().trim() || $("h1").first().text().trim() || url;
@@ -267,12 +349,6 @@ const fetchPageWithAxios = async (url) => {
     }
   }
 
-  const links = [];
-  $("a[href]").each((_, el) => {
-    const href = $(el).attr("href");
-    if (href) links.push(href);
-  });
-
   return { title, metaDesc, headings, content, links };
 };
 
@@ -289,6 +365,21 @@ const crawlUrl = async (url, maxPages = 1) => {
     baseUrl = new URL(url).origin;
   } catch {
     return results;
+  }
+
+  // If user has a higher plan, leverage sitemap for exact URL discovery
+  if (maxPages > 1) {
+    console.log(`Checking sitemap for ${baseUrl}...`);
+    const sitemapUrls = await fetchSitemap(baseUrl);
+    if (sitemapUrls && sitemapUrls.length > 0) {
+      console.log(`Found ${sitemapUrls.length} URLs in sitemap`);
+      sitemapUrls.forEach(sUrl => {
+        if (sUrl.startsWith(baseUrl) && !queue.includes(sUrl)) {
+          // Add sitemap URLs to queue immediately after the root URL
+          queue.push(sUrl);
+        }
+      });
+    }
   }
 
   const priorityPaths = [
