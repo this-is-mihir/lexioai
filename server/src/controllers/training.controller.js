@@ -607,8 +607,10 @@ const rebuildSystemPrompt = async (bot) => {
       allContent += `\n### ${source.textTitle}\n${source.text}\n`;
       totalChars += source.characterCount || 0;
     } else if (source.type === "url") {
+      if (source.text) allContent += `\n${source.text}\n`;
       totalChars += source.characterCount || 0;
     } else if (source.type === "file") {
+      if (source.text) allContent += `\n${source.text}\n`;
       totalChars += source.characterCount || 0;
     }
   });
@@ -738,6 +740,7 @@ const trainWithURL = async (req, res) => {
               "trainingSources.$.status": "completed",
               "trainingSources.$.crawledPages": crawledData.length,
               "trainingSources.$.characterCount": totalChars,
+              "trainingSources.$.text": urlContent,
               "trainingSources.$.processedAt": new Date(),
               trainingStatus: "trained",
               systemPrompt,
@@ -947,6 +950,7 @@ const trainWithFile = async (req, res) => {
               "trainingSources.$.fileUrl": uploadResult.secure_url,
               "trainingSources.$.cloudinaryId": uploadResult.public_id,
               "trainingSources.$.characterCount": extractedText.length,
+              "trainingSources.$.text": extractedText,
               "trainingSources.$.processedAt": new Date(),
               trainingStatus: "trained",
               systemPrompt,
