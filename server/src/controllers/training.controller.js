@@ -382,13 +382,6 @@ const crawlUrl = async (url, maxPages = 1) => {
     }
   }
 
-  const priorityPaths = [
-    "/about", "/about-us", "/contact", "/contact-us",
-    "/products", "/services", "/pricing", "/faq",
-    "/help", "/support", "/terms", "/privacy",
-    "/shipping", "/returns", "/refund", "/blog",
-  ];
-
   let browser = null;
   try {
     browser = await puppeteer.launch({
@@ -427,6 +420,16 @@ const crawlUrl = async (url, maxPages = 1) => {
       if (!data) continue;
 
       const { title, metaDesc, ogDesc, headings, sections, listItems, content, links, imageAlts } = data;
+
+      // Smart 404 Detector: skip pages that look like soft 404 error pages
+      const combinedText = [title, metaDesc, ...(headings || []), content].join(" ").toLowerCase();
+      if (
+        combinedText.includes("404") && 
+        (combinedText.includes("page not found") || combinedText.includes("wrong turn") || combinedText.includes("not be found"))
+      ) {
+        console.log(`Skipping soft 404 page: ${currentUrl}`);
+        continue;
+      }
 
       let pageContent = "";
       if (metaDesc) pageContent += `Description: ${metaDesc}\n`;
@@ -476,15 +479,6 @@ const crawlUrl = async (url, maxPages = 1) => {
       }
 
       if (visited.size < maxPages) {
-        if (visited.size === 1) {
-          priorityPaths.forEach((path) => {
-            const fullUrl = baseUrl + path;
-            if (!visited.has(fullUrl) && !queue.includes(fullUrl)) {
-              queue.unshift(fullUrl);
-            }
-          });
-        }
-
         if (links) {
           links.forEach((href) => {
             try {
