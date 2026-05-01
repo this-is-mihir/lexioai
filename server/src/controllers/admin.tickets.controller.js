@@ -120,6 +120,7 @@ const replyToTicket = async (req, res) => {
         port: parseInt(process.env.EMAIL_PORT),
         secure: process.env.EMAIL_SECURE === "true",
         auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASSWORD },
+        family: 4,
       });
 
       await transporter.sendMail({

@@ -18,6 +18,7 @@ const getTransporter = async () => {
       user: smtp.user,
       pass: smtp.pass,
     },
+    family: 4,
   });
 };
 

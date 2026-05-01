@@ -588,6 +588,7 @@ const forgotPassword = async (req, res) => {
         user: smtp.user,
         pass: smtp.pass,
       },
+      family: 4,
     });
 
     const fromAddress =
