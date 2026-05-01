@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns");
 const {
   getSMTPIntegrationConfig,
   getGeneralSettings,
@@ -18,7 +19,9 @@ const getTransporter = async () => {
       user: smtp.user,
       pass: smtp.pass,
     },
-    family: 4,
+    lookup: (hostname, options, callback) => {
+      dns.lookup(hostname, { family: 4 }, callback);
+    },
   });
 };
 

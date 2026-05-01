@@ -577,6 +577,7 @@ const forgotPassword = async (req, res) => {
 
     // Email bhejo
     const nodemailer = require("nodemailer");
+    const dns = require("dns");
     const smtp = await getSMTPIntegrationConfig();
     const general = await getGeneralSettings();
 
@@ -588,7 +589,9 @@ const forgotPassword = async (req, res) => {
         user: smtp.user,
         pass: smtp.pass,
       },
-      family: 4,
+      lookup: (hostname, options, callback) => {
+        dns.lookup(hostname, { family: 4 }, callback);
+      },
     });
 
     const fromAddress =
