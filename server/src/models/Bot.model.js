@@ -516,7 +516,7 @@ const botSchema = new mongoose.Schema(
     systemPrompt: {
       type: String,
       default: null,
-      maxlength: [50000, "System prompt cannot exceed 50000 characters"],
+      maxlength: [500000, "System prompt cannot exceed 50000 characters"],
     },
 
     // ----------------------------------------------------------------
