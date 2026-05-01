@@ -114,20 +114,8 @@ const replyToTicket = async (req, res) => {
 
     // Email notification to user
     try {
-      const nodemailer = require("nodemailer");
-      const dns = require("dns");
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: parseInt(process.env.EMAIL_PORT),
-        secure: process.env.EMAIL_SECURE === "true",
-        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASSWORD },
-        lookup: (hostname, options, callback) => {
-          dns.lookup(hostname, { family: 4 }, callback);
-        },
-      });
-
-      await transporter.sendMail({
-        from: `"Lexioai Support" <${process.env.EMAIL_FROM_ADDRESS}>`,
+      const { sendEmail } = require("../utils/email.utils");
+      await sendEmail({
         to: ticket.userEmail,
         subject: `Re: ${ticket.subject} [${ticket.ticketId}]`,
         html: `

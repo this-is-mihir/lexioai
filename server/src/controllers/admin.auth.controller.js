@@ -576,33 +576,9 @@ const forgotPassword = async (req, res) => {
     await admin.save();
 
     // Email bhejo
-    const nodemailer = require("nodemailer");
-    const dns = require("dns");
-    const smtp = await getSMTPIntegrationConfig();
-    const general = await getGeneralSettings();
+    const { sendEmail } = require("../utils/email.utils");
 
-    const transporter = nodemailer.createTransport({
-      host: smtp.host,
-      port: Number(smtp.port),
-      secure: Boolean(smtp.secure),
-      auth: {
-        user: smtp.user,
-        pass: smtp.pass,
-      },
-      lookup: (hostname, options, callback) => {
-        dns.lookup(hostname, { family: 4 }, callback);
-      },
-    });
-
-    const fromAddress =
-      smtp.fromEmail ||
-      process.env.EMAIL_FROM_ADDRESS ||
-      general.supportEmail ||
-      "noreply@lexioai.com";
-    const fromName = process.env.EMAIL_FROM_NAME || general.siteName || "Lexioai";
-
-    await transporter.sendMail({
-      from: `"${fromName}" <${fromAddress}>`,
+    await sendEmail({
       to: admin.email,
       subject: "Admin Password Reset - Lexioai",
       html: `

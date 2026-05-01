@@ -367,6 +367,8 @@ const verifyUserEmail = async (req, res) => {
   }
 };
 
+const { sendEmail } = require("../utils/email.utils");
+
 // ----------------------------------------------------------------
 // @route   POST /api/v1/admin/users/:userId/send-email
 // ----------------------------------------------------------------
@@ -383,20 +385,7 @@ const sendEmailToUser = async (req, res) => {
     const user = await User.findById(req.params.userId);
     if (!user) return notFoundResponse(res, "User not found");
 
-    const nodemailer = require("nodemailer");
-    const dns = require("dns");
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: parseInt(process.env.EMAIL_PORT),
-      secure: process.env.EMAIL_SECURE === "true",
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASSWORD },
-      lookup: (hostname, options, callback) => {
-        dns.lookup(hostname, { family: 4 }, callback);
-      },
-    });
-
-    await transporter.sendMail({
-      from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM_ADDRESS}>`,
+    const result = await sendEmail({
       to: user.email,
       subject,
       html: `
@@ -410,6 +399,10 @@ const sendEmailToUser = async (req, res) => {
         </div>
       `,
     });
+
+    if (!result.success) {
+      return errorResponse(res, { message: "Failed to send email via Resend." });
+    }
 
     await AuditLog.log({
       adminId: req.admin._id,

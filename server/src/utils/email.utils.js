@@ -1,44 +1,11 @@
-const nodemailer = require("nodemailer");
-const dns = require("dns");
+const { Resend } = require("resend");
 const {
   getSMTPIntegrationConfig,
   getGeneralSettings,
 } = require("./platformSettings.utils");
 
-// ----------------------------------------------------------------
-// TRANSPORTER — Gmail SMTP
-// ----------------------------------------------------------------
-const getTransporter = async () => {
-  const smtp = await getSMTPIntegrationConfig();
-
-  return nodemailer.createTransport({
-    host: smtp.host,
-    port: Number(smtp.port),
-    secure: Boolean(smtp.secure),
-    auth: {
-      user: smtp.user,
-      pass: smtp.pass,
-    },
-    lookup: (hostname, options, callback) => {
-      dns.lookup(hostname, { family: 4 }, callback);
-    },
-  });
-};
-
-// ----------------------------------------------------------------
-// VERIFY CONNECTION
-// ----------------------------------------------------------------
-const verifyEmailConnection = async () => {
-  try {
-    const transporter = await getTransporter();
-    await transporter.verify();
-    console.log("✅ Email service connected!");
-    return true;
-  } catch (error) {
-    console.error("❌ Email service failed:", error.message);
-    return false;
-  }
-};
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY || "re_cbL7ebqD_CcQU8HTSVyKkurhFZcEtDsDF");
 
 // ----------------------------------------------------------------
 // GENERATE OTP — 6 digit
@@ -94,33 +61,32 @@ const baseTemplate = (content) => `
 `;
 
 // ----------------------------------------------------------------
-// SEND EMAIL — Base function
+// SEND EMAIL — Base function (Using Resend API)
 // ----------------------------------------------------------------
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    const transporter = await getTransporter();
-    const smtp = await getSMTPIntegrationConfig();
     const general = await getGeneralSettings();
 
-    const fromAddress =
-      smtp.fromEmail ||
-      process.env.EMAIL_FROM_ADDRESS ||
-      general.supportEmail ||
-      "noreply@lexioai.com";
+    // Resend free tier usually requires "onboarding@resend.dev" 
+    // unless you have a custom domain verified.
+    // For now, we will use a fallback logic or the domain provided in env.
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+    const fromName = process.env.EMAIL_FROM_NAME || general.siteName || "Lexioai";
 
-    const fromName =
-      process.env.EMAIL_FROM_NAME ||
-      general.siteName ||
-      "Lexioai";
-
-    const info = await transporter.sendMail({
-      from: `"${fromName}" <${fromAddress}>`,
-      to,
-      subject,
-      html,
+    const { data, error } = await resend.emails.send({
+      from: `${fromName} <${fromEmail}>`,
+      to: [to],
+      subject: subject,
+      html: html,
     });
-    console.log(`📧 Email sent to ${to}: ${info.messageId}`);
-    return { success: true, messageId: info.messageId };
+
+    if (error) {
+      console.error(`❌ Resend failed to ${to}:`, error);
+      return { success: false, error: error.message };
+    }
+
+    console.log(`📧 Email sent to ${to} via Resend: ${data.id}`);
+    return { success: true, messageId: data.id };
   } catch (error) {
     console.error(`❌ Email failed to ${to}:`, error.message);
     return { success: false, error: error.message };
@@ -494,5 +460,4 @@ module.exports = {
   sendEmailChangeOTP,
   sendAdminCredentialsEmail,
   sendForcedPasswordResetEmail,
-  verifyEmailConnection,
 };
