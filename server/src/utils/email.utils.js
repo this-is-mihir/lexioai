@@ -1,30 +1,15 @@
-const nodemailer = require("nodemailer");
-const dns = require("dns");
+const brevo = require("@getbrevo/brevo");
 const {
   getSMTPIntegrationConfig,
   getGeneralSettings,
 } = require("./platformSettings.utils");
 
-// ----------------------------------------------------------------
-// TRANSPORTER — Professional SMTP Relay (Brevo/Sendinblue)
-// ----------------------------------------------------------------
-const getTransporter = async () => {
-  const smtp = await getSMTPIntegrationConfig();
-  
-  // Professional fix for Render: Force IPv4 during DNS lookup
-  return nodemailer.createTransport({
-    host: smtp.host || process.env.EMAIL_HOST,
-    port: Number(smtp.port || process.env.EMAIL_PORT),
-    secure: String(smtp.secure || process.env.EMAIL_SECURE) === "true",
-    auth: {
-      user: smtp.user || process.env.EMAIL_USER,
-      pass: smtp.pass || process.env.EMAIL_PASSWORD,
-    },
-    lookup: (hostname, options, callback) => {
-      dns.lookup(hostname, { family: 4 }, callback);
-    },
-  });
-};
+// Initialize Brevo API
+const defaultClient = brevo.ApiClient.instance;
+const apiKey = defaultClient.authentications["api-key"];
+apiKey.apiKey = process.env.BREVO_API_KEY;
+
+const apiInstance = new brevo.TransactionalEmailsApi();
 
 // ----------------------------------------------------------------
 // GENERATE OTP — 6 digit
@@ -80,32 +65,28 @@ const baseTemplate = (content) => `
 `;
 
 // ----------------------------------------------------------------
-// SEND EMAIL — Base function
+// SEND EMAIL — Base function (Using Brevo API)
 // ----------------------------------------------------------------
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    const transporter = await getTransporter();
     const general = await getGeneralSettings();
     const smtp = await getSMTPIntegrationConfig();
 
-    const fromAddress =
-      smtp.fromEmail ||
-      process.env.EMAIL_FROM_ADDRESS ||
-      general.supportEmail ||
-      "noreply@lexioai.com";
-    const fromName = process.env.EMAIL_FROM_NAME || general.siteName || "Lexioai";
+    const fromEmail = process.env.BREVO_SENDER_EMAIL || "patelmihir0367@gmail.com";
+    const fromName = process.env.BREVO_SENDER_NAME || general.siteName || "Lexioai";
 
-    const info = await transporter.sendMail({
-      from: `"${fromName}" <${fromAddress}>`,
-      to,
-      subject,
-      html,
-    });
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.subject = subject;
+    sendSmtpEmail.htmlContent = html;
+    sendSmtpEmail.sender = { name: fromName, email: fromEmail };
+    sendSmtpEmail.to = [{ email: to }];
 
-    console.log(`📧 Email sent to ${to}: ${info.messageId}`);
-    return { success: true, messageId: info.messageId };
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+
+    console.log(`📧 Email sent to ${to} via Brevo API: ${data.messageId}`);
+    return { success: true, messageId: data.messageId };
   } catch (error) {
-    console.error(`❌ Email failed to ${to}:`, error.message);
+    console.error(`❌ Brevo API failed to ${to}:`, error.message);
     return { success: false, error: error.message };
   }
 };
