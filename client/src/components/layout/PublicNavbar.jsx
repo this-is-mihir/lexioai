@@ -222,8 +222,8 @@ export default function PublicNavbar() {
             {platformName}
           </Link>
 
-          {/* Center — Nav links inside a pill capsule */}
-          <nav className="hidden items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--bg-soft)]/60 px-1.5 py-1 text-sm font-medium lg:flex">
+          {/* Center — Nav links */}
+          <nav className="hidden items-center gap-1 text-sm font-medium lg:flex">
             <button type="button" className={pillNavClass(isNavActive({ hash: '#features' }))} onClick={() => handleSectionNavigation('#features')}>Features</button>
             <button type="button" className={pillNavClass(isNavActive({ hash: '#platform' }))} onClick={() => handleSectionNavigation('#platform')}>Platform</button>
             <button type="button" className={pillNavClass(isNavActive({ hash: '#trust' }))} onClick={() => handleSectionNavigation('#trust')}>Trust</button>
