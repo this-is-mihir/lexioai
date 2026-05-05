@@ -318,21 +318,23 @@ export default function BotAppearanceSettings({ botId, initialData, onUpdate }) 
             type="button"
             disabled={!canRemoveBranding}
             onClick={() => canRemoveBranding && setFormData(prev => ({ ...prev, showPoweredBy: !prev.showPoweredBy }))}
-            className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none flex-shrink-0"
+            className="relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-200 focus:outline-none flex-shrink-0"
             style={{
-              backgroundColor: !formData.showPoweredBy && canRemoveBranding ? 'var(--primary-500)' : '#d1d5db',
-              opacity: canRemoveBranding ? 1 : 0.5,
+              backgroundColor: !formData.showPoweredBy && canRemoveBranding ? 'var(--primary-500)' : 'transparent',
+              border: !formData.showPoweredBy && canRemoveBranding ? '2px solid var(--primary-500)' : '2px solid #9ca3af',
+              opacity: canRemoveBranding ? 1 : 0.4,
               cursor: canRemoveBranding ? 'pointer' : 'not-allowed',
             }}
           >
             <span
-              className="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 shadow"
+              className="inline-block h-4 w-4 transform rounded-full transition-transform duration-200 shadow-sm"
               style={{
-                transform: !formData.showPoweredBy && canRemoveBranding ? 'translateX(22px)' : 'translateX(3px)',
+                transform: !formData.showPoweredBy && canRemoveBranding ? 'translateX(23px)' : 'translateX(3px)',
+                backgroundColor: !formData.showPoweredBy && canRemoveBranding ? '#fff' : '#9ca3af',
               }}
             />
             {!canRemoveBranding && (
-              <Lock size={10} className="absolute right-1.5 top-1.5" style={{ color: '#9ca3af' }} />
+              <Lock size={10} className="absolute right-1.5 top-2" style={{ color: '#9ca3af' }} />
             )}
           </button>
         </div>
