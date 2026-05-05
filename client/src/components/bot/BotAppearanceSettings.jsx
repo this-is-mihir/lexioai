@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { Upload, X, Check } from 'lucide-react'
+import { Upload, X, Check, Crown, Lock } from 'lucide-react'
 import toast from 'react-hot-toast'
 import clientApi from '../../api/axios'
 import Button from '../ui/Button'
 import Card from '../ui/Card'
 import Input from '../ui/Input'
+import useAuthStore from '../../store/authStore'
 
 
 
@@ -22,6 +23,8 @@ export default function BotAppearanceSettings({ botId, initialData, onUpdate }) 
   const fileInputRef = useRef(null)
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const { user } = useAuthStore()
+  const canRemoveBranding = ['pro', 'business'].includes(user?.plan)
 
   
   const [formData, setFormData] = useState({
@@ -32,6 +35,7 @@ export default function BotAppearanceSettings({ botId, initialData, onUpdate }) 
     avatarImageUrl: initialData?.appearance?.avatarImageUrl || null,
     chatWindowTitle: initialData?.appearance?.chatWindowTitle || 'Chat with us',
     inputPlaceholder: initialData?.behavior?.inputPlaceholder || 'Type your message...',
+    showPoweredBy: initialData?.behavior?.showPoweredBy !== false,
   })
 
   useEffect(() => {
@@ -112,10 +116,14 @@ export default function BotAppearanceSettings({ botId, initialData, onUpdate }) 
 
       await clientApi.put(`/bots/${botId}/appearance`, payload)
 
-      // Also update input placeholder in behavior
-      await clientApi.put(`/bots/${botId}/behavior`, {
+      // Also update input placeholder and branding toggle in behavior
+      const behaviorPayload = {
         inputPlaceholder: formData.inputPlaceholder,
-      })
+      }
+      if (canRemoveBranding) {
+        behaviorPayload.showPoweredBy = formData.showPoweredBy
+      }
+      await clientApi.put(`/bots/${botId}/behavior`, behaviorPayload)
 
       toast.success('Settings saved successfully!')
       onUpdate?.()
@@ -285,6 +293,54 @@ export default function BotAppearanceSettings({ botId, initialData, onUpdate }) 
             <p className="text-xs text-[var(--text-muted)] mt-1">{formData.inputPlaceholder.length}/50</p>
           </div>
         </div>
+      </Card>
+
+      {/* 6. POWERED BY BRANDING */}
+      <Card className="p-5">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-semibold">Remove "Powered by" Badge</p>
+              {!canRemoveBranding && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                  <Crown size={10} /> PRO
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-[var(--text-muted)] mt-1">
+              {canRemoveBranding
+                ? 'Hide the "Powered by Lexio AI" badge from your chatbot widget.'
+                : 'Upgrade to Pro or Business plan to remove branding from your chatbot.'
+              }
+            </p>
+          </div>
+          <button
+            type="button"
+            disabled={!canRemoveBranding}
+            onClick={() => canRemoveBranding && setFormData(prev => ({ ...prev, showPoweredBy: !prev.showPoweredBy }))}
+            className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none flex-shrink-0"
+            style={{
+              backgroundColor: !formData.showPoweredBy && canRemoveBranding ? 'var(--primary-500)' : '#d1d5db',
+              opacity: canRemoveBranding ? 1 : 0.5,
+              cursor: canRemoveBranding ? 'pointer' : 'not-allowed',
+            }}
+          >
+            <span
+              className="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 shadow"
+              style={{
+                transform: !formData.showPoweredBy && canRemoveBranding ? 'translateX(22px)' : 'translateX(3px)',
+              }}
+            />
+            {!canRemoveBranding && (
+              <Lock size={10} className="absolute right-1.5 top-1.5" style={{ color: '#9ca3af' }} />
+            )}
+          </button>
+        </div>
+        {!formData.showPoweredBy && canRemoveBranding && (
+          <div className="mt-3 p-2 rounded-lg text-xs font-medium flex items-center gap-2" style={{ backgroundColor: 'var(--primary-500)', color: 'white', opacity: 0.9 }}>
+            <Check size={14} /> Branding will be hidden on your live chatbot widget.
+          </div>
+        )}
       </Card>
 
       {/* SAVE BUTTON */}

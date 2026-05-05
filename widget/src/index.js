@@ -156,7 +156,8 @@ class LexioaiWidget {
     this.shadowRoot.appendChild(this.bubble);
 
     // Create chat window
-    const showPoweredBy = !appearance.customBranding; // Hide if custom branding enabled
+    const behavior = this.botConfig.behavior || {};
+    const showPoweredBy = behavior.showPoweredBy !== false; // Default true, hide only when explicitly false
     const { window, messages, inputArea, closeBtn } = UI.createChatWindow(
       botName,
       primaryColor,
