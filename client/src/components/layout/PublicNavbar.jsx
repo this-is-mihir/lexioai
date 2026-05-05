@@ -67,6 +67,11 @@ export default function PublicNavbar() {
       ? 'relative rounded-lg bg-primary-500/14 px-3 py-1.5 text-primary-500 shadow-[inset_0_0_0_1px_rgba(99,102,241,0.35),0_12px_24px_-20px_rgba(99,102,241,0.85)] after:absolute after:-bottom-2 after:left-1/2 after:h-0.5 after:w-8 after:-translate-x-1/2 after:rounded-full after:bg-primary-500'
       : 'relative rounded-lg px-3 py-1.5 text-[var(--text-muted)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-primary-500/8 hover:text-primary-500 hover:shadow-[0_14px_24px_-22px_rgba(99,102,241,0.95)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/35'
 
+  const pillNavClass = (active) =>
+    active
+      ? 'rounded-full bg-[var(--bg-card)] px-3.5 py-1.5 text-[13px] font-semibold text-primary-500 shadow-sm transition-all duration-200'
+      : 'rounded-full px-3.5 py-1.5 text-[13px] font-medium text-[var(--text-muted)] transition-all duration-200 hover:bg-[var(--bg-card)] hover:text-[var(--text)] hover:shadow-sm'
+
   const mobileNavClass = (active) =>
     active
       ? 'sidebar-item-active border border-primary-500/35 bg-primary-500/12 text-primary-500 shadow-[0_12px_24px_-20px_rgba(99,102,241,0.8)]'
@@ -209,90 +214,52 @@ export default function PublicNavbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg-card)]/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4">
+      <header className="sticky top-0 z-40 px-3 pt-2.5 pb-1">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between rounded-full border border-[var(--border)] bg-[var(--bg-card)]/80 px-5 shadow-[0_4px_20px_-6px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:shadow-[0_4px_20px_-6px_rgba(0,0,0,0.3)]">
+          {/* Left — Logo */}
           <Link to="/" className="flex items-center gap-2 text-lg font-extrabold">
             <img src={logoSrc} alt={platformName} className="h-9 w-9 rounded-lg object-cover" />
             {platformName}
           </Link>
 
-          <nav className="hidden items-center gap-4 text-sm font-medium lg:flex">
-            {!isAuthenticated ? (
-              <>
-                <button type="button" className={desktopNavClass(isNavActive({ hash: '#features' }))} onClick={() => handleSectionNavigation('#features')}>Features</button>
-                <button type="button" className={desktopNavClass(isNavActive({ hash: '#platform' }))} onClick={() => handleSectionNavigation('#platform')}>Platform</button>
-                <button type="button" className={desktopNavClass(isNavActive({ hash: '#trust' }))} onClick={() => handleSectionNavigation('#trust')}>Trust</button>
-                
-                {/* Docs Dropdown for Non-Logged In */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    className={desktopNavClass(isDocsRouteActive)}
-                    onClick={() => {
-                      setMenuOpen(false)
-                      setDocsMenuOpen((v) => !v)
-                    }}
-                  >
-                    <span className="inline-flex items-center gap-1">
-                      Docs
-                      <ChevronDown size={14} className={`transition ${docsMenuOpen ? 'rotate-180' : ''}`} />
-                    </span>
-                  </button>
+          {/* Center — Nav links inside a pill capsule */}
+          <nav className="hidden items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--bg-soft)]/60 px-1.5 py-1 text-sm font-medium lg:flex">
+            <button type="button" className={pillNavClass(isNavActive({ hash: '#features' }))} onClick={() => handleSectionNavigation('#features')}>Features</button>
+            <button type="button" className={pillNavClass(isNavActive({ hash: '#platform' }))} onClick={() => handleSectionNavigation('#platform')}>Platform</button>
+            <button type="button" className={pillNavClass(isNavActive({ hash: '#trust' }))} onClick={() => handleSectionNavigation('#trust')}>Trust</button>
 
-                  <div
-                    className={`absolute left-0 top-12 z-50 w-48 origin-top-left rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-2 shadow-soft transition-all duration-200 ${docsMenuOpen ? 'pointer-events-auto translate-y-0 scale-100 opacity-100' : 'pointer-events-none -translate-y-1 scale-95 opacity-0'}`}
-                  >
-                    <Link to="/setup-guide" className="sidebar-item" onClick={handleRouteNavigation}>
-                      Setup Guide
-                    </Link>
-                    <Link to="/help-center" className="sidebar-item" onClick={handleRouteNavigation}>
-                      Help Center
-                    </Link>
-                  </div>
-                </div>
+            {/* Docs Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                className={pillNavClass(isDocsRouteActive)}
+                onClick={() => {
+                  setMenuOpen(false)
+                  setDocsMenuOpen((v) => !v)
+                }}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Docs
+                  <ChevronDown size={13} className={`transition ${docsMenuOpen ? 'rotate-180' : ''}`} />
+                </span>
+              </button>
 
-                <Link to="/blog" className={desktopNavClass(isNavActive({ path: '/blog' }))} onClick={handleRouteNavigation}>Blog</Link>
-                <Link to="/pricing" className={desktopNavClass(isNavActive({ path: '/pricing' }))} onClick={handleRouteNavigation}>Pricing</Link>
-              </>
-            ) : (
-              <>
-                <button type="button" className={desktopNavClass(isNavActive({ hash: '#features' }))} onClick={() => handleSectionNavigation('#features')}>Features</button>
-                <button type="button" className={desktopNavClass(isNavActive({ hash: '#platform' }))} onClick={() => handleSectionNavigation('#platform')}>Platform</button>
-                <button type="button" className={desktopNavClass(isNavActive({ hash: '#trust' }))} onClick={() => handleSectionNavigation('#trust')}>Trust</button>
-                
-                <div className="relative">
-                  <button
-                    type="button"
-                    className={desktopNavClass(isDocsRouteActive)}
-                    onClick={() => {
-                      setMenuOpen(false)
-                      setDocsMenuOpen((v) => !v)
-                    }}
-                  >
-                    <span className="inline-flex items-center gap-1">
-                      Docs
-                      <ChevronDown size={14} className={`transition ${docsMenuOpen ? 'rotate-180' : ''}`} />
-                    </span>
-                  </button>
+              <div
+                className={`absolute left-1/2 top-11 z-50 w-44 -translate-x-1/2 origin-top rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-1.5 shadow-soft transition-all duration-200 ${docsMenuOpen ? 'pointer-events-auto translate-y-0 scale-100 opacity-100' : 'pointer-events-none -translate-y-1 scale-95 opacity-0'}`}
+              >
+                <Link to="/setup-guide" className="sidebar-item text-[13px]" onClick={handleRouteNavigation}>
+                  Setup Guide
+                </Link>
+                <Link to="/help-center" className="sidebar-item text-[13px]" onClick={handleRouteNavigation}>
+                  Help Center
+                </Link>
+              </div>
+            </div>
 
-                  <div
-                    className={`absolute left-0 top-12 z-50 w-48 origin-top-left rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-2 shadow-soft transition-all duration-200 ${docsMenuOpen ? 'pointer-events-auto translate-y-0 scale-100 opacity-100' : 'pointer-events-none -translate-y-1 scale-95 opacity-0'}`}
-                  >
-                    <Link to="/setup-guide" className="sidebar-item" onClick={handleRouteNavigation}>
-                      Setup Guide
-                    </Link>
-                    <Link to="/help-center" className="sidebar-item" onClick={handleRouteNavigation}>
-                      Help Center
-                    </Link>
-                  </div>
-                </div>
-
-                <Link to="/blog" className={desktopNavClass(isNavActive({ path: '/blog' }))} onClick={handleRouteNavigation}>Blog</Link>
-                <Link to="/pricing" className={desktopNavClass(isNavActive({ path: '/pricing' }))} onClick={handleRouteNavigation}>Pricing</Link>
-              </>
-            )}
+            <Link to="/pricing" className={pillNavClass(isNavActive({ path: '/pricing' }))} onClick={handleRouteNavigation}>Pricing</Link>
           </nav>
 
+          {/* Right — Actions */}
           <div className="flex items-center gap-2">
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
@@ -333,7 +300,7 @@ export default function PublicNavbar() {
                 <div className="relative hidden lg:block">
                   <button
                     type="button"
-                    className="btn-secondary min-w-[190px] justify-between"
+                    className="inline-flex h-10 items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] px-3 text-sm font-semibold transition hover:border-primary-400/50 hover:bg-primary-500/5"
                     onClick={() => {
                       setDocsMenuOpen(false)
                       setMobileNavOpen(false)
@@ -348,7 +315,7 @@ export default function PublicNavbar() {
                           {avatarInitial}
                         </span>
                       )}
-                      <span className="truncate text-left">{displayName}</span>
+                      <span className="hidden truncate text-left xl:block max-w-[120px]">{displayName}</span>
                     </span>
                     <ChevronDown size={14} className={`transition ${menuOpen ? 'rotate-180' : ''}`} />
                   </button>

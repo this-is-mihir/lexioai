@@ -241,63 +241,75 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <PublicNavbar />
 
-      <section className="hero-grid relative overflow-hidden border-b border-[var(--border)] px-4 pb-14 pt-10 md:pb-20 md:pt-14">
-        <div className="pointer-events-none absolute -left-20 top-0 h-80 w-80 rounded-full bg-primary-500/20 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-amber-400/20 blur-3xl" />
+      <section className="hero-grid relative overflow-hidden border-b border-[var(--border)] px-4 pb-16 pt-[calc(3rem+70px)] md:pb-24 md:pt-[calc(4rem+70px)] -mt-[70px]">
+        {/* Background effects */}
+        <div className="pointer-events-none absolute -left-20 top-0 h-96 w-96 rounded-full bg-primary-500/15 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-amber-400/15 blur-[100px]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-500/40 to-transparent" />
-        <div className="mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-2 lg:gap-12">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-primary-500/30 bg-primary-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.13em] text-primary-500">
-              <Sparkles size={14} /> AI agents for magical customer experiences
-            </p>
-            <h1 className="mt-4 max-w-2xl text-[clamp(2.1rem,4.8vw,4.5rem)] font-extrabold leading-[1.02] tracking-[-0.03em]">
-              AI agents for
-              <span className="block text-primary-500">modern customer support</span>
-            </h1>
-            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--text-muted)] lg:text-[17px]">
-              Chatbase-style premium experience with stronger trust visuals, fast setup, and clear enterprise-ready behavior from day one.
-            </p>
-            {!isAuthenticated ? (
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/register" className="btn-primary !h-9 !px-4">
-                  Build my agent for free <ArrowRight size={16} />
-                </Link>
-                <Link to="/pricing" className="btn-secondary !h-9 !px-4">See pricing</Link>
-              </div>
-            ) : (
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/dashboard" className="btn-primary !h-9 !px-4">
-                  Open dashboard <ArrowRight size={16} />
-                </Link>
-                <Link to="/profile" className="btn-secondary !h-9 !px-4">Open profile</Link>
-              </div>
-            )}
 
-            <div className="mt-12 grid gap-4 sm:grid-cols-3 text-center">
-              <div className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-card)]/50 p-6">
-                <p className="text-xl sm:text-2xl font-semibold text-primary-500">4.9/5</p>
-                <p className="mt-2 text-xs font-normal text-[var(--text-muted)] uppercase tracking-wide">Support rating</p>
-              </div>
-              <div className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-card)]/50 p-6">
-                <p className="text-xl sm:text-2xl font-semibold text-primary-500">24/7</p>
-                <p className="mt-2 text-xs font-normal text-[var(--text-muted)] uppercase tracking-wide">Always online</p>
-              </div>
-              <div className="rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-card)]/50 p-6">
-                <p className="text-xl sm:text-2xl font-semibold text-primary-500">10 min</p>
-                <p className="mt-2 text-xs font-normal text-[var(--text-muted)] uppercase tracking-wide">Average setup</p>
-              </div>
+        <div className="mx-auto w-full max-w-5xl text-center">
+          {/* Badge */}
+          <p className="inline-flex items-center gap-2 rounded-full border border-primary-500/30 bg-primary-500/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.13em] text-primary-500">
+            <Sparkles size={13} /> AI agents for magical customer experiences
+          </p>
+
+          {/* Main heading — serif style */}
+          <h1 className="mt-5 font-serif text-[clamp(2.4rem,6vw,5rem)] leading-[1.08] tracking-[-0.02em]">
+            AI agents for
+            <br />
+            <em className="text-primary-500 not-italic font-serif italic">modern customer</em>
+            {' '}support
+          </h1>
+
+          {/* Subtitle */}
+          <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-relaxed text-[var(--text-muted)] sm:text-[17px]">
+            Chatbase-style premium experience with stronger trust visuals, fast setup, and clear enterprise-ready behavior from day one.
+          </p>
+
+          {/* CTA buttons — centered */}
+          {!isAuthenticated ? (
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link to="/register" className="btn-primary !h-11 !px-6 !text-sm">
+                Build my agent for free <ArrowRight size={16} />
+              </Link>
+              <Link to="/pricing" className="btn-secondary !h-11 !px-6 !text-sm">See pricing</Link>
             </div>
+          ) : (
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link to="/dashboard" className="btn-primary !h-11 !px-6 !text-sm">
+                Open dashboard <ArrowRight size={16} />
+              </Link>
+              <Link to="/profile" className="btn-secondary !h-11 !px-6 !text-sm">Open profile</Link>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom section: Left stats | Chat card | Right stats */}
+        <div className="mx-auto mt-14 grid w-full max-w-6xl items-start gap-6 lg:grid-cols-[180px_1fr_180px] md:mt-16">
+          {/* Left — Static stats */}
+          <div className="hidden lg:flex flex-col gap-3">
+            {[
+              { value: '4.9/5', label: 'Support rating' },
+              { value: '24/7', label: 'Always online' },
+              { value: '10 min', label: 'Average setup' },
+            ].map((s) => (
+              <div key={s.label} className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/80 p-4 text-center backdrop-blur-sm transition hover:shadow-lg hover:border-primary-500/30">
+                <p className="text-lg font-bold text-primary-500">{s.value}</p>
+                <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">{s.label}</p>
+              </div>
+            ))}
           </div>
 
+          {/* Center — Chat demo card */}
           <Card className="overflow-hidden border-primary-500/20 p-0">
-            <div className="bg-[linear-gradient(120deg,#fff_0%,#f0ecff_45%,#fff6ec_100%)] p-5 dark:bg-[linear-gradient(120deg,#141b29_0%,#1a2237_42%,#261f31_100%)] sm:p-8">
+            <div className="bg-[linear-gradient(120deg,#fff_0%,#f0ecff_45%,#fff6ec_100%)] p-5 dark:bg-[linear-gradient(120deg,#141b29_0%,#1a2237_42%,#261f31_100%)] sm:p-7">
               <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-xl dark:border-white/10 dark:bg-[#171f2e]">
                 <div className="flex items-center justify-between">
                   <p className="inline-flex items-center gap-2 text-sm font-semibold">
                     <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-primary-500/10 text-primary-500">
                       <Bot size={14} />
                     </span>
-                    Lexio AI Assistant
+                    {platformName} Assistant
                   </p>
                   <span className="rounded-full bg-primary-500/10 px-2 py-1 text-[10px] font-semibold text-primary-500">Live</span>
                 </div>
@@ -318,15 +330,40 @@ export default function LandingPage() {
               </div>
             </div>
           </Card>
+
+          {/* Right — Dynamic stats from API */}
+          <div className="hidden lg:flex flex-col gap-3">
+            {[
+              { value: data?.stats?.activeUsers || '10K+', label: 'Active Users', color: 'text-primary-500' },
+              { value: data?.stats?.totalChats || data?.stats?.chatsHandled || '5M+', label: 'Total Chats', color: 'text-primary-500' },
+              { value: data?.stats?.uptime || '99.9%', label: 'Uptime', color: 'text-amber-500' },
+              { value: data?.stats?.botsDeployed || '1000+', label: 'Bots Deployed', color: 'text-green-500' },
+            ].map((s) => (
+              <div key={s.label} className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/80 p-4 text-center backdrop-blur-sm transition hover:shadow-lg hover:border-primary-500/30">
+                <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
+                <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">{s.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
-      </section>
-
-      <section className="mx-auto w-full max-w-7xl grid grid-cols-2 gap-3 px-4 py-10 text-center sm:grid-cols-4">
-        <Card className="p-4 hover:shadow-lg transition duration-300" data-stagger><p className="text-2xl font-bold text-primary-500">{data?.stats?.activeUsers || '10K+'}</p><p className="text-xs text-[var(--text-muted)] mt-1 font-medium">Active Users</p></Card>
-        <Card className="p-4 hover:shadow-lg transition duration-300" data-stagger><p className="text-2xl font-bold text-primary-500">{data?.stats?.totalChats || data?.stats?.chatsHandled || '5M+'}</p><p className="text-xs text-[var(--text-muted)] mt-1 font-medium">Total Chats</p></Card>
-        <Card className="p-4 hover:shadow-lg transition duration-300" data-stagger><p className="text-2xl font-bold text-amber-500">{data?.stats?.uptime || '99.9%'}</p><p className="text-xs text-[var(--text-muted)] mt-1 font-medium">Uptime</p></Card>
-        <Card className="p-4 hover:shadow-lg transition duration-300" data-stagger><p className="text-2xl font-bold text-green-500">{data?.stats?.botsDeployed || '1000+'}</p><p className="text-xs text-[var(--text-muted)] mt-1 font-medium">Bots Deployed</p></Card>
+        {/* Mobile stats — shown below on smaller screens */}
+        <div className="mx-auto mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4 lg:hidden">
+          {[
+            { value: '4.9/5', label: 'Support rating', color: 'text-primary-500' },
+            { value: '24/7', label: 'Always online', color: 'text-primary-500' },
+            { value: '10 min', label: 'Average setup', color: 'text-primary-500' },
+            { value: data?.stats?.activeUsers || '10K+', label: 'Active Users', color: 'text-primary-500' },
+            { value: data?.stats?.totalChats || data?.stats?.chatsHandled || '5M+', label: 'Total Chats', color: 'text-primary-500' },
+            { value: data?.stats?.uptime || '99.9%', label: 'Uptime', color: 'text-amber-500' },
+            { value: data?.stats?.botsDeployed || '1000+', label: 'Bots Deployed', color: 'text-green-500' },
+          ].map((s) => (
+            <div key={s.label} className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/80 p-3 text-center">
+              <p className={`text-base font-bold ${s.color}`}>{s.value}</p>
+              <p className="mt-1 text-[9px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">{s.label}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="scroll-mt-24 px-4 py-20" id="trust">
