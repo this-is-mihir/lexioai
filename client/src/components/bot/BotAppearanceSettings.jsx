@@ -342,11 +342,6 @@ export default function BotAppearanceSettings({ botId, initialData, onUpdate }) 
             />
           </button>
         </div>
-        {!formData.showPoweredBy && canRemoveBranding && (
-          <div className="mt-3 p-2 rounded-lg text-xs font-medium flex items-center gap-2" style={{ backgroundColor: 'var(--primary-500)', color: 'white', opacity: 0.9 }}>
-            <Check size={14} /> Branding will be hidden on your live chatbot widget.
-          </div>
-        )}
       </Card>
 
       {/* SAVE BUTTON */}
